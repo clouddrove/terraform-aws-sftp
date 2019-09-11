@@ -80,7 +80,7 @@ Here is an example of how you can use this module in your inventory structure:
         key_path                  = "~/.ssh/id_rsa.pub"
         user_name                 = "ftp-user"
         enable_sftp               = true
-        s3_bucket_id              = module.s3_bucket.id
+        s3_bucket_id              = clouddrove_dev_s3_bucket
 }
 ```
 
