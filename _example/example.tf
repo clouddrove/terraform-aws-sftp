@@ -18,7 +18,7 @@ module "s3_bucket" {
 }
 
 module "sftp" {
-  source      = "./../"
+  source      = "git::https://github.com/clouddrove/terraform-aws-sftp.git?ref=tags/0.12.1"
   name        = "sftp"
   application = "clouddrove"
   environment = "test"
