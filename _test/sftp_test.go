@@ -5,7 +5,6 @@ package test
 
 import (
 	"testing"
-	"strings"
 	"github.com/stretchr/testify/assert"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 )
@@ -26,10 +25,10 @@ func Test(t *testing.T) {
 	defer terraform.Destroy(t, terraformOptions)
 
 	// To get the value of an output variable, run 'terraform output'
-	Id := strings.Join(terraform.OutputList(t, terraformOptions, "id")," ")
+	Id := terraform.Output(t, terraformOptions, "id")
 	Tags := terraform.OutputMap(t, terraformOptions, "tags")
 
 	// Verify we're getting back the outputs we expect
 	assert.Contains(t, Id, "s-")
-	assert.Equal(t, "test-redis-cd", Tags["Name"])
+	assert.Equal(t, "test-sftp-clouddrove", Tags["Name"])
 }
