@@ -65,12 +65,12 @@ variable "s3_bucket_id" {
 }
 
 variable "key_path" {
-  type = string
-  default = ""
+  type        = string
+  default     = ""
   description = "Name  (e.g. `~/.ssh/id_rsa.pub` or `ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQ`)."
 }
 variable "sub_folder" {
-  type = string
-  default = ""
+  type        = string
+  default     = ""
   description = "Landind folder."
 }

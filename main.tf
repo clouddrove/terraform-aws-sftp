@@ -5,8 +5,8 @@
 #Module      : label
 #Description : Terraform module to create consistent naming for multiple names.
 module "labels" {
-  source = "git::https://github.com/clouddrove/terraform-labels.git?ref=tags/0.12.0"
-  name = var.name
+  source      = "git::https://github.com/clouddrove/terraform-labels.git?ref=tags/0.12.0"
+  name        = var.name
   application = var.application
   environment = var.environment
   label_order = var.label_order
@@ -56,7 +56,7 @@ resource "aws_iam_role_policy" "transfer_server_policy" {
 # Description : Provides a AWS Transfer Server resource.
 resource "aws_transfer_server" "transfer_server" {
   count                  = var.enable_sftp ? 1 : 0
-  identity_provider_type =  var.identity_provider_type
+  identity_provider_type = var.identity_provider_type
   logging_role           = aws_iam_role.transfer_server_role.arn
   force_destroy          = false
   tags                   = module.labels.tags

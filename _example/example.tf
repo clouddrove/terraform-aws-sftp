@@ -18,14 +18,14 @@ module "s3_bucket" {
 }
 
 module "sftp" {
-  source                    = "git::https://github.com/clouddrove/terraform-aws-sftp.git?ref=tags/0.12.0"
-  name                      = "sftp"
-  application               = "clouddrove"
-  environment               = "test"
+  source      = "git::https://github.com/clouddrove/terraform-aws-sftp.git?ref=tags/0.12.0"
+  name        = "sftp"
+  application = "clouddrove"
+  environment = "test"
   label_order = ["environment", "name", "application"]
 
-  key_path                  = "~/.ssh/id_rsa.pub"
-  user_name                 = "ftp-user"
-  enable_sftp               = true
-  s3_bucket_id              = module.s3_bucket.id
+  key_path     = "~/.ssh/id_rsa.pub"
+  user_name    = "ftp-user"
+  enable_sftp  = true
+  s3_bucket_id = module.s3_bucket.id
 }
