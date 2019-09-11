@@ -111,7 +111,8 @@ Here is an example of how you can use this module in your inventory structure:
 
 | Name | Description |
 |------|-------------|
-| transfer_server_endpoint | The endpoint of the Transfer Server (e.g. s-12345678.server.transfer.REGION.amazonaws.com) |
+| transfer_server_endpoint | The endpoint of the Transfer Server (e.g. s-12345678.server.transfer.REGION.amazonaws.com). |
+| transfer_server_id | The Server ID of the Transfer Server (e.g. s-12345678). |
 
 
 
