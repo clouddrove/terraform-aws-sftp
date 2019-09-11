@@ -76,7 +76,7 @@ Here is an example of how you can use this module in your inventory structure:
         name                      = "sftp"
         application               = "clouddrove"
         environment               = "test"
-        label_order = ["environment", "name", "application"]
+        label_order               = ["environment", "name", "application"]
         key_path                  = "~/.ssh/id_rsa.pub"
         user_name                 = "ftp-user"
         enable_sftp               = true
