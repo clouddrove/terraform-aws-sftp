@@ -5,10 +5,10 @@ provider "aws" {
 module "s3_bucket" {
   source = "git::https://github.com/clouddrove/terraform-aws-s3.git?ref=tags/0.12.1"
 
-  name        = "secure-bucket"
+  name        = "sftp"
   application = "clouddrove"
   environment = "test"
-  label_order = ["environment", "name", "application"]
+  label_order = ["environment", "application", "name"]
 
   region         = "eu-west-1"
   versioning     = true
@@ -18,7 +18,7 @@ module "s3_bucket" {
 }
 
 module "sftp" {
-  source      = "git::https://github.com/clouddrove/terraform-aws-sftp.git?ref=tags/0.12.1"
+  source      = "./../"
   name        = "sftp"
   application = "clouddrove"
   environment = "test"
