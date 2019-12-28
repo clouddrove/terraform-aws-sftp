@@ -22,7 +22,7 @@ module "sftp" {
   name        = "sftp"
   application = "clouddrove"
   environment = "test"
-  label_order = ["environment", "name", "application"]
+  label_order = ["environment", "application", "name"]
 
   key_path     = "~/.ssh/id_rsa.pub"
   user_name    = "ftp-user"
