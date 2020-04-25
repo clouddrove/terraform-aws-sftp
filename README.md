@@ -38,7 +38,7 @@
 <hr>
 
 
-We eat, drink, sleep and most importantly love **DevOps**. We are working towards stratergies for standardizing architecture while ensuring security for the infrastructure. We are strong believer of the philosophy <b>Bigger problems are always solved by breaking them into smaller manageable problems</b>. Resonating with microservices architecture, it is considered best-practice to run database, cluster, storage in smaller <b>connected yet manageable pieces</b> within the infrastructure.
+We eat, drink, sleep and most importantly love **DevOps**. We are working towards strategies for standardizing architecture while ensuring security for the infrastructure. We are strong believer of the philosophy <b>Bigger problems are always solved by breaking them into smaller manageable problems</b>. Resonating with microservices architecture, it is considered best-practice to run database, cluster, storage in smaller <b>connected yet manageable pieces</b> within the infrastructure.
 
 This module is basically combination of [Terraform open source](https://www.terraform.io/) and includes automatation tests and examples. It also helps to create and improve your infrastructure with minimalistic code instead of maintaining the whole infrastructure code yourself.
 
@@ -72,7 +72,7 @@ This module has a few dependencies:
 Here is an example of how you can use this module in your inventory structure:
 ```hcl
   module "sftp" {
-        source                    = "git::https://github.com/clouddrove/terraform-aws-sftp.git?ref=tags/0.12.0"
+        source                    = "git::https://github.com/clouddrove/terraform-aws-sftp.git?ref=tags/0.12.2"
         name                      = "sftp"
         application               = "clouddrove"
         environment               = "test"
@@ -81,7 +81,7 @@ Here is an example of how you can use this module in your inventory structure:
         user_name                 = "ftp-user"
         enable_sftp               = true
         s3_bucket_id              = clouddrove_dev_s3_bucket
-}
+        }
 ```
 
 
@@ -93,26 +93,27 @@ Here is an example of how you can use this module in your inventory structure:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| application | Application (e.g. `cd` or `clouddrove`). | string | `` | no |
-| attributes | Additional attributes (e.g. `1`). | list | `<list>` | no |
-| delimiter | Delimiter to be used between `organization`, `environment`, `name` and `attributes`. | string | `-` | no |
-| enable_sftp | Set to false to prevent the module from creating any resources. | bool | `true` | no |
-| environment | Environment (e.g. `prod`, `dev`, `staging`). | string | `` | no |
-| identity_provider_type | The mode of authentication enabled for this service. The default value is SERVICE_MANAGED, which allows you to store and access SFTP user credentials within the service. API_GATEWAY. | string | `SERVICE_MANAGED` | no |
-| key_path | Name  (e.g. `~/.ssh/id_rsa.pub` or `ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQ`). | string | `` | no |
-| label_order | Label order, e.g. `name`,`application`. | list | `<list>` | no |
-| name | Name  (e.g. `app` or `cluster`). | string | `` | no |
-| s3_bucket_id | The landing directory (folder) for a user when they log in to the server using their SFTP client. | string | - | yes |
-| sub_folder | Landind folder. | string | `` | no |
-| tags | Additional tags (e.g. map(`BusinessUnit`,`XYZ`). | map | `<map>` | no |
-| user_name | User name for SFTP server. | string | - | yes |
+| application | Application \(e.g. `cd` or `clouddrove`\). | string | `""` | no |
+| attributes | Additional attributes \(e.g. `1`\). | list | `<list>` | no |
+| delimiter | Delimiter to be used between `organization`, `environment`, `name` and `attributes`. | string | `"-"` | no |
+| enable\_sftp | Set to false to prevent the module from creating any resources. | bool | `"true"` | no |
+| environment | Environment \(e.g. `prod`, `dev`, `staging`\). | string | `""` | no |
+| identity\_provider\_type | The mode of authentication enabled for this service. The default value is SERVICE\_MANAGED, which allows you to store and access SFTP user credentials within the service. API\_GATEWAY. | string | `"SERVICE_MANAGED"` | no |
+| key\_path | Name  \(e.g. `~/.ssh/id\_rsa.pub` or `ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQ`\). | string | `""` | no |
+| label\_order | Label order, e.g. `name`,`application`. | list | `<list>` | no |
+| managedby | ManagedBy, eg 'CloudDrove' or 'AnmolNagpal'. | string | `"anmol@clouddrove.com"` | no |
+| name | Name  \(e.g. `app` or `cluster`\). | string | `""` | no |
+| s3\_bucket\_id | The landing directory \(folder\) for a user when they log in to the server using their SFTP client. | string | n/a | yes |
+| sub\_folder | Landind folder. | string | `""` | no |
+| tags | Additional tags \(e.g. map\(`BusinessUnit`,`XYZ`\). | map | `<map>` | no |
+| user\_name | User name for SFTP server. | string | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| transfer_server_endpoint | The endpoint of the Transfer Server (e.g. s-12345678.server.transfer.REGION.amazonaws.com). |
-| transfer_server_id | The Server ID of the Transfer Server (e.g. s-12345678). |
+| tags | A mapping of tags to assign to the resource. |
+| transfer\_server\_endpoint | The endpoint of the Transfer Server \(e.g. s-12345678.server.transfer.REGION.amazonaws.com\). |
 
 
 
