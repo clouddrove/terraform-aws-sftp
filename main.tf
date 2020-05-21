@@ -73,12 +73,3 @@ resource "aws_transfer_user" "transfer_server_user" {
   home_directory = format("/%s/%s", var.s3_bucket_id, var.sub_folder)
   tags           = module.labels.tags
 }
-
-# Module      : AWS TRANSFER SSH KEY
-# Description : Provides a AWS Transfer User SSH Key resource.
-resource "aws_transfer_ssh_key" "transfer_server_ssh_key" {
-  count     = var.enable_sftp ? 1 : 0
-  server_id = aws_transfer_server.transfer_server.*.id[0]
-  user_name = aws_transfer_user.transfer_server_user.*.user_name[0]
-  body      = file(var.key_path)
-}
