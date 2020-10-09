@@ -56,14 +56,23 @@ resource "aws_iam_role_policy" "transfer_server_policy" {
 # Module      : AWS TRANSFER SERVER
 # Description : Provides a AWS Transfer Server resource.
 resource "aws_transfer_server" "transfer_server" {
-  count                  = var.enable_sftp ? 1 : 0
+  count                  = var.enable_sftp && var.endpoint_type == "PUBLIC" ? 1 : 0
+  identity_provider_type = var.identity_provider_type
+  logging_role           = aws_iam_role.transfer_server_role.arn
+  force_destroy          = false
+  tags                   = module.labels.tags
+  endpoint_type          = var.endpoint_type
+}
+#with VPC endpoint
+resource "aws_transfer_server" "transfer_server_vpc" {
+  count                  = var.enable_sftp && var.endpoint_type == "VPC" ? 1 : 0
   identity_provider_type = var.identity_provider_type
   logging_role           = aws_iam_role.transfer_server_role.arn
   force_destroy          = false
   tags                   = module.labels.tags
   endpoint_type          = var.endpoint_type
   endpoint_details {
-    vpc_id = "vpc-XXXXXXXXXXXXXX"
+    vpc_id = "vpc-XXXXXXXXXXXXXXXXXXX"
   }
 }
 
@@ -71,7 +80,7 @@ resource "aws_transfer_server" "transfer_server" {
 # Description : Provides a AWS Transfer User resource.
 resource "aws_transfer_user" "transfer_server_user" {
   count          = var.enable_sftp ? 1 : 0
-  server_id      = aws_transfer_server.transfer_server.*.id[0]
+  server_id      = var.endpoint_type == "VPC" ? aws_transfer_server.transfer_server_vpc.*.id[0] : aws_transfer_server.transfer_server.*.id[0]
   user_name      = var.user_name
   role           = aws_iam_role.transfer_server_role.arn
   home_directory = format("/%s/%s", var.s3_bucket_id, var.sub_folder)
@@ -82,7 +91,7 @@ resource "aws_transfer_user" "transfer_server_user" {
 # Description : Provides a AWS Transfer User SSH Key resource.
 resource "aws_transfer_ssh_key" "transfer_server_ssh_key" {
   count     = var.enable_sftp ? 1 : 0
-  server_id = aws_transfer_server.transfer_server.*.id[0]
+  server_id = var.endpoint_type == "VPC" ? aws_transfer_server.transfer_server_vpc.*.id[0] : aws_transfer_server.transfer_server.*.id[0]
   user_name = aws_transfer_user.transfer_server_user.*.user_name[0]
   body      = file(var.key_path)
 }

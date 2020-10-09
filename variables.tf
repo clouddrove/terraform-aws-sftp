@@ -82,6 +82,6 @@ variable "sub_folder" {
 }
 variable "endpoint_type" {
   type        = string
-  default     = "VPC"
+  default     = "PUBLIC"
   description = "The type of endpoint that you want your SFTP server connect to. If you connect to a VPC (or VPC_ENDPOINT), your SFTP server isn't accessible over the public internet. If you want to connect your SFTP server via public internet, set PUBLIC. Defaults to PUBLIC"
 }
