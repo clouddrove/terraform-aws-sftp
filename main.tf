@@ -5,7 +5,7 @@
 #Module      : label
 #Description : Terraform module to create consistent naming for multiple names.
 module "labels" {
-  source      = "git::https://github.com/clouddrove/terraform-labels.git?ref=tags/0.12.0"
+  source      = "git::https://github.com/clouddrove/terraform-labels.git?ref=tags/0.13.0"
   name        = var.name
   application = var.application
   environment = var.environment
@@ -61,6 +61,10 @@ resource "aws_transfer_server" "transfer_server" {
   logging_role           = aws_iam_role.transfer_server_role.arn
   force_destroy          = false
   tags                   = module.labels.tags
+  endpoint_type          = var.endpoint_type
+  endpoint_details {
+    vpc_id = "vpc-XXXXXXXXXXXXXX"
+  }
 }
 
 # Module      : AWS TRANSFER USER
