@@ -72,7 +72,7 @@ resource "aws_transfer_server" "transfer_server_vpc" {
   tags                   = module.labels.tags
   endpoint_type          = var.endpoint_type
   endpoint_details {
-    vpc_id = "vpc-XXXXXXXXXXXXXXXXXXX"
+    vpc_id = var.vpc_id
   }
 }
 

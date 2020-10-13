@@ -85,3 +85,8 @@ variable "endpoint_type" {
   default     = "PUBLIC"
   description = "The type of endpoint that you want your SFTP server connect to. If you connect to a VPC (or VPC_ENDPOINT), your SFTP server isn't accessible over the public internet. If you want to connect your SFTP server via public internet, set PUBLIC. Defaults to PUBLIC"
 }
+variable "vpc_id" {
+  type        = string
+  default     = "vpc-0ea04e161d1bc836d"
+  description = "VPC ID"
+}

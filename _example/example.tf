@@ -24,8 +24,9 @@ module "sftp" {
   environment = "test"
   label_order = ["environment", "name", "application"]
 
-  key_path     = "~/.ssh/id_rsa.pub"
-  user_name    = "ftp-user"
-  enable_sftp  = true
-  s3_bucket_id = module.s3_bucket.id
+  key_path      = "~/.ssh/id_rsa.pub"
+  user_name     = "ftp-user"
+  enable_sftp   = true
+  s3_bucket_id  = module.s3_bucket.id
+  endpoint_type = "PUBLIC"
 }
