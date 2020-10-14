@@ -37,7 +37,7 @@ jobs:
             go get -v -t -d ./...
           fi
       - name: Generate SSH key
-        run: ssh-keygen -t rsa -b 4096
+        run: ssh-keygen -t rsa -f ~/.ssh/id_rsa <<< y
       - name: Test Example
         working-directory: ./_test
         run: go test
