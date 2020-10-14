@@ -36,6 +36,8 @@ jobs:
           else
             go get -v -t -d ./...
           fi
+      - name: Generate SSH key
+        run: ssh-keygen -t rsa -b 4096
       - name: Test Example
         working-directory: ./_test
         run: go test
