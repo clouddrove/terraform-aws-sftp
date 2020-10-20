@@ -3,8 +3,8 @@ provider "aws" {
 }
 
 module "s3_bucket" {
-  source = "git::https://github.com/clouddrove/terraform-aws-s3.git"
-
+  source      = "clouddrove/s3/aws"
+  version     = "0.13.0"
   name        = "secure-bucket"
   application = "clouddrove"
   environment = "test"
