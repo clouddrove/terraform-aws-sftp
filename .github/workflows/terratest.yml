@@ -21,8 +21,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.TEST_AWS_ACCESS_SECRET_KEY }}
           aws-region: us-east-2
 
-      - name: 'Generate ssh key'
-        run: ssh-keygen -t rsa -f ~/.ssh/id_rsa <<< y
 
       - name: 'Terratest'
         if: ${{ github.event.label.name == 'terratest' }}
