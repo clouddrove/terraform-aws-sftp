@@ -5,7 +5,7 @@ provider "aws" {
 module "s3_bucket" {
   source      = "clouddrove/s3/aws"
   version     = "0.13.0"
-  name        = "secure-bucket"
+  name        = "secure-buc"
   application = "clouddrove"
   environment = "test"
   label_order = ["environment", "name", "application"]
