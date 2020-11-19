@@ -16,7 +16,7 @@ github_repo: clouddrove/terraform-aws-sftp
 # Badges to display
 badges:
   - name: "Terraform"
-    image: "https://img.shields.io/badge/Terraform-v0.12-green"
+    image: "https://img.shields.io/badge/terraform-v0.13-green"
     url: "https://www.terraform.io"
   - name: "Licence"
     image: "https://img.shields.io/badge/License-MIT-blue.svg"
@@ -36,7 +36,8 @@ usage : |-
   Here is an example of how you can use this module in your inventory structure:
   ```hcl
     module "sftp" {
-          source                    = "git::https://github.com/clouddrove/terraform-aws-sftp.git?ref=tags/0.12.2"
+          source                    = "clouddrove/sftp/aws"
+          version                   = "0.13.0"
           name                      = "sftp"
           application               = "clouddrove"
           environment               = "test"
@@ -45,5 +46,6 @@ usage : |-
           user_name                 = "ftp-user"
           enable_sftp               = true
           s3_bucket_id              = clouddrove_dev_s3_bucket
+          endpoint_type             = "PUBLIC"
           }
   ```
