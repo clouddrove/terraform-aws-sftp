@@ -3,12 +3,13 @@ provider "aws" {
 }
 
 module "s3_bucket" {
-  source = "git::https://github.com/clouddrove/terraform-aws-s3.git?ref=tags/0.12.1"
+  source  = "clouddrove/s3/aws"
+  version = "0.14.0"
 
   name        = "secure-bucket"
-  application = "clouddrove"
+  repository  = "https://registry.terraform.io/modules/clouddrove/s3/aws/0.14.0"
   environment = "test"
-  label_order = ["environment", "name", "application"]
+  label_order = ["name", "environment"]
 
   region         = "eu-west-1"
   versioning     = true
@@ -20,9 +21,9 @@ module "s3_bucket" {
 module "sftp" {
   source      = "../"
   name        = "sftp"
-  application = "clouddrove"
+  repository  = "https://github.com/clouddrove/terraform-aws-sftp"
   environment = "test"
-  label_order = ["environment", "name", "application"]
+  label_order = ["name", "environment"]
 
   key_path     = "~/.ssh/id_rsa.pub"
   user_name    = "ftp-user"
