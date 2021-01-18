@@ -45,5 +45,6 @@ usage : |-
           user_name                 = "ftp-user"
           enable_sftp               = true
           s3_bucket_id              = clouddrove_dev_s3_bucket
+          endpoint_type             = "PUBLIC"
           }
   ```

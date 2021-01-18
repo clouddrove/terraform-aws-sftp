@@ -30,5 +30,5 @@ func Test(t *testing.T) {
 
 	// Verify we're getting back the outputs we expect
 	assert.Contains(t, Id, "s-")
-	assert.Equal(t, "clouddrove-sftp-bucket-test", Tags["Name"])
+	assert.Equal(t, "sftp-test", Tags["Name"])
 }
