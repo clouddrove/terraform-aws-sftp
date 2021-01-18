@@ -2,14 +2,17 @@
 ## Description : This Script is used to create Transfer Server, Transfer User And  TransferSSK_KEY.
 ## Copyright @ CloudDrove. All Right Reserved.
 
-#Module      : label
-#Description : Terraform module to create consistent naming for multiple names.
+#Module      : labels
+#Description : This terraform module is designed to generate consistent label names and tags
+#              for resources. You can use terraform-labels to implement a strict naming
+#              convention.
 module "labels" {
   source      = "git::https://github.com/clouddrove/terraform-labels.git?ref=tags/0.14.0"
   name        = var.name
   repository  = var.repository
   environment = var.environment
   managedby   = var.managedby
+  attributes  = var.attributes
   label_order = var.label_order
 }
 
@@ -78,7 +81,7 @@ resource "aws_transfer_user" "transfer_server_user" {
 # Description : Provides a AWS Transfer User SSH Key resource.
 resource "aws_transfer_ssh_key" "transfer_server_ssh_key" {
   count     = var.enable_sftp ? 1 : 0
-  server_id = aws_transfer_server.transfer_server.*.id[0]
-  user_name = aws_transfer_user.transfer_server_user.*.user_name[0]
-  body      = file(var.key_path)
+  server_id = join("", aws_transfer_server.transfer_server.*.id)
+  user_name = join("", aws_transfer_user.transfer_server_user.*.user_name)
+  body      = var.public_key == "" ? file(var.key_path) : var.public_key
 }

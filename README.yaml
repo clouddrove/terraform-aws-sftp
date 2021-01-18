@@ -36,9 +36,9 @@ usage : |-
   Here is an example of how you can use this module in your inventory structure:
   ```hcl
     module "sftp" {
-          source                    = "git::https://github.com/clouddrove/terraform-aws-sftp.git?ref=tags/0.14.0"
+          source                    = "clouddrove/sftp/aws"
+          version                   = "0.14.0"
           name                      = "sftp"
-          repository                = "https://github.com/clouddrove/terraform-aws-sftp"
           environment               = "test"
           label_order               = ["name", "environment"]
           key_path                  = "~/.ssh/id_rsa.pub"
