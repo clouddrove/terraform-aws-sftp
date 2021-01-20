@@ -6,10 +6,10 @@ variable "name" {
   description = "Name  (e.g. `app` or `cluster`)."
 }
 
-variable "application" {
+variable "repository" {
   type        = string
-  default     = ""
-  description = "Application (e.g. `cd` or `clouddrove`)."
+  default     = "https://registry.terraform.io/modules/clouddrove/sftp/aws"
+  description = "Terraform current module repo"
 }
 
 variable "environment" {
@@ -19,27 +19,27 @@ variable "environment" {
 }
 
 variable "label_order" {
-  type        = list
+  type        = list(any)
   default     = []
   description = "Label order, e.g. `name`,`application`."
 }
 
 variable "attributes" {
-  type        = list
+  type        = list(any)
   default     = []
   description = "Additional attributes (e.g. `1`)."
 }
 
 variable "tags" {
-  type        = map
+  type        = map(any)
   default     = {}
   description = "Additional tags (e.g. map(`BusinessUnit`,`XYZ`)."
 }
 
 variable "managedby" {
   type        = string
-  default     = "anmol@clouddrove.com"
-  description = "ManagedBy, eg 'CloudDrove' or 'AnmolNagpal'."
+  default     = "hello@clouddrove.com"
+  description = "ManagedBy, eg 'CloudDrove'."
 }
 
 variable "delimiter" {
@@ -58,6 +58,14 @@ variable "enable_sftp" {
 variable "user_name" {
   type        = string
   description = "User name for SFTP server."
+  sensitive   = true
+}
+
+variable "public_key" {
+  type        = string
+  default     = ""
+  description = "Name  (e.g. `ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQ`)."
+  sensitive   = true
 }
 
 variable "identity_provider_type" {
@@ -65,34 +73,34 @@ variable "identity_provider_type" {
   default     = "SERVICE_MANAGED"
   description = "The mode of authentication enabled for this service. The default value is SERVICE_MANAGED, which allows you to store and access SFTP user credentials within the service. API_GATEWAY."
 }
+
 variable "s3_bucket_id" {
   type        = string
   description = "The landing directory (folder) for a user when they log in to the server using their SFTP client."
+  sensitive   = true
 }
 
 variable "key_path" {
   type        = string
   default     = ""
-  description = "Name  (e.g. `~/.ssh/id_rsa.pub` or `ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQ`)."
+  description = "Name  (e.g. `~/.ssh/id_rsa.pub`)."
+  sensitive   = true
 }
 variable "sub_folder" {
   type        = string
   default     = ""
   description = "Landind folder."
+  sensitive   = true
 }
+
 variable "endpoint_type" {
   type        = string
   default     = "PUBLIC"
   description = "The type of endpoint that you want your SFTP server connect to. If you connect to a VPC (or VPC_ENDPOINT), your SFTP server isn't accessible over the public internet. If you want to connect your SFTP server via public internet, set PUBLIC. Defaults to PUBLIC"
 }
+
 variable "vpc_id" {
   type        = string
-  default     = "vpc-0ea04e161d1bc836d"
+  default     = ""
   description = "VPC ID"
-}
-
-variable "ssh_key" {
-  type        = string
-  default     = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQz1x2cEikKDEY0aIj41qgxMCP/iteneqXSIFZBp5vizPvaoIR3Um9xK7PGoW8giupGn+EPuxIA4cDM4vzOqOkiMPhz5XK0whEjkVzTo4+S0puvDZuwIsdiW9mxhJc7tgBNL0cYlWSYVkz4G/fslNfRPW5mYAM49f4fhtxPb5ok4Q2Lg9dPKVHO/Bgeu5woMc7RY0p1ej6D4CKFE6lymSDJpW0YHX/wqE9+cfEauh7xZcG0q9t2ta6F6fmX0agvpFyZo8aFbXeUBr7osSCJNgvavWbM/06niWrOvYX2xwWdhXmXSrbX8ZbabVohBK41 example@example.com"
-  description = "SSH key"
 }

@@ -16,7 +16,7 @@ github_repo: clouddrove/terraform-aws-sftp
 # Badges to display
 badges:
   - name: "Terraform"
-    image: "https://img.shields.io/badge/terraform-v0.13-green"
+    image: "https://img.shields.io/badge/Terraform-v0.14-green"
     url: "https://www.terraform.io"
   - name: "Licence"
     image: "https://img.shields.io/badge/License-MIT-blue.svg"
@@ -37,11 +37,10 @@ usage : |-
   ```hcl
     module "sftp" {
           source                    = "clouddrove/sftp/aws"
-          version                   = "0.13.0"
+          version                   = "0.14.0"
           name                      = "sftp"
-          application               = "clouddrove"
           environment               = "test"
-          label_order               = ["environment", "name", "application"]
+          label_order               = ["name", "environment"]
           key_path                  = "~/.ssh/id_rsa.pub"
           user_name                 = "ftp-user"
           enable_sftp               = true
