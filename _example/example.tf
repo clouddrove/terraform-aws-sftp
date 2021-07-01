@@ -10,9 +10,9 @@ module "s3_bucket" {
   environment = "test"
   label_order = ["name", "environment"]
 
-  versioning     = true
-  acl            = "private"
-  force_destroy  = true
+  versioning    = true
+  acl           = "private"
+  force_destroy = true
 }
 
 module "sftp" {
