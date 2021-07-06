@@ -6,7 +6,7 @@ module "s3_bucket" {
   source  = "clouddrove/s3/aws"
   version = "0.15.0"
 
-  name        = "clouddrove-sftp-bucket"
+  name        = "clouddrove-sftp-bucket123"
   environment = "test"
   label_order = ["name", "environment"]
 
