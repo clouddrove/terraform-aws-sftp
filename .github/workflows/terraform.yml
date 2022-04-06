@@ -56,6 +56,15 @@ jobs:
           terraform validate
           terraform plan -input=false -no-color
 
+      - name: tflint
+        uses: reviewdog/action-tflint@master
+        with:
+          github_token: ${{ secrets.GITHUB }}
+          working_directory: ${{ matrix.directory }}
+          fail_on_error: 'true'
+          filter_mode: 'nofilter'
+          flags: '--module'
+
   format:
     name: Check code format
     runs-on: ubuntu-latest
