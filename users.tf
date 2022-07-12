@@ -1,6 +1,6 @@
 resource "aws_iam_role" "user" {
   for_each           = var.sftp_users
-  name               = "${moule.this.id}-sftp-user-${each.key}"
+  name               = "${module.this.id}-sftp-user-${each.key}"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -19,7 +19,7 @@ EOF
 
 resource "aws_iam_role_policy" "user" {
   for_each = var.sftp_users
-  name     = "${moule.this.id}-user-${each.key}"
+  name     = "${module.this.id}-user-${each.key}"
   role     = aws_iam_role.user[each.key].id
 
   policy = <<POLICY
