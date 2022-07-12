@@ -1,25 +1,25 @@
 resource "aws_iam_role" "user" {
-  for_each           = var.sftp_users
-  name               = "${module.this.id}-sftp-user-${each.key}"
+  for_each           = module.this.enabled && length(var.sftp_users) > 0 ? { for s in var.sftp_users : s.user_name => s } : {}
+  name               = "${module.this.id}-sftp-user-${each.value.user_name}"
   assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
     {
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "transfer.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+        "Effect": "Allow",
+        "Principal": {
+            "Service": "transfer.amazonaws.com"
+        },
+        "Action": "sts:AssumeRole"
+        }
+    ]
     }
-  ]
-}
-EOF
+    EOF
 }
 
 resource "aws_iam_role_policy" "user" {
-  for_each = var.sftp_users
-  name     = "${module.this.id}-user-${each.key}"
+  for_each = module.this.enabled && length(var.sftp_users) > 0 ? { for s in var.sftp_users : s.user_name => s } : {}
+  name     = "${module.this.id}-user-${each.value.user_name}"
   role     = aws_iam_role.user[each.key].id
 
   policy = <<POLICY
@@ -55,7 +55,7 @@ POLICY
 }
 
 resource "aws_transfer_user" "this" {
-  for_each       = var.sftp_users
+  for_each       = module.this.enabled && length(var.sftp_users) > 0 ? { for s in var.sftp_users : s.user_name => s } : {}
   server_id      = local.server_id
   user_name      = each.value.user_name
   home_directory = "/${each.value.home_directory}"
@@ -64,7 +64,7 @@ resource "aws_transfer_user" "this" {
 }
 
 resource "aws_transfer_ssh_key" "this" {
-  for_each   = var.sftp_users
+  for_each   = module.this.enabled && length(var.sftp_users) > 0 ? { for s in var.sftp_users : s.user_name => s } : {}
   server_id  = local.server_id
   user_name  = each.value.user_name
   body       = each.value.ssh_key
