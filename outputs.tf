@@ -1,16 +1,29 @@
-#Module      : SFTP
-#Description : Terraform sftp module outputs.
+output "arn" {
+  value       = var.sftp_type == "PUBLIC" ? join(",", aws_transfer_server.public.*.arn) : join(",", aws_transfer_server.vpc.*.arn)
+  description = "ARN of transfer server"
+}
+
 output "id" {
-  value       = join("", aws_transfer_server.transfer_server.*.id)
-  description = "The Server ID of the Transfer Server (e.g. s-12345678)."
+  value       = local.server_id
+  description = "ID of transfer server"
 }
 
-output "transfer_server_endpoint" {
-  value       = join("", aws_transfer_server.transfer_server.*.endpoint)
-  description = "The endpoint of the Transfer Server (e.g. s-12345678.server.transfer.REGION.amazonaws.com)."
+output "endpoint" {
+  value       = local.server_ep
+  description = "Endpoint of transfer server"
 }
 
-output "tags" {
-  value       = module.labels.tags
-  description = "A mapping of tags to assign to the resource."
+output "domain_name" {
+  value       = var.hosted_zone == null ? null : join(",", aws_route53_record.sftp.*.fqdn)
+  description = "Custom DNS name mapped in Route53 for transfer server"
+}
+
+output "sftp_sg_id" {
+  value       = var.sftp_type == "VPC" && lookup(var.endpoint_details, "security_group_ids", null) == null ? join(",", aws_security_group.sftp_vpc.*.id) : null
+  description = "ID of security group created for SFTP server. Available only if SFTP type is VPC and security group is not provided by you"
+}
+
+output "sftp_eip" {
+  value       = var.sftp_type == "VPC" && lookup(var.endpoint_details, "address_allocation_ids", null) == null ? aws_eip.sftp_vpc.*.public_ip : null
+  description = "Elastic IP attached to the SFTP server. Available only if SFTP type is VPC and allocation id is not provided by you"
 }

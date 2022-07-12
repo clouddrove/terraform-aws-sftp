@@ -1,56 +1,126 @@
-variable "public_key" {
+variable "sftp_type" {
   type        = string
-  default     = ""
-  description = "Name  (e.g. `ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQ`)."
-  sensitive   = true
+  default     = "PUBLIC"
+  description = "Type of SFTP server. **Valid values:** `PUBLIC`, `VPC` or `VPC_ENDPOINT`"
+}
+
+variable "protocols" {
+  type        = list(string)
+  default     = ["SFTP"]
+  description = "List of file transfer protocol(s) over which your FTP client can connect to your server endpoint. **Possible Values:** FTP, FTPS and SFTP"
+}
+
+variable "certificate_arn" {
+  type        = string
+  default     = null
+  description = "ARN of ACM certificate. Required only in case of FTPS protocol"
+}
+
+variable "endpoint_details" {
+  type = object({
+    vpc_id                 = optional(string)
+    vpc_endpoint_id        = optional(string)
+    subnet_ids             = optional(list(string))
+    security_group_ids     = optional(list(string))
+    address_allocation_ids = optional(list(string))
+  })
+  default     = {}
+  description = <<-EOT
+    A block required to setup SFTP server if type is set to `VPC` or `VPC_ENDPOINT`
+    ```{
+      vpc_id                 = (Optional) ID of VPC in which SFTP server endpoint will be hosted. Required if endpoint type is set to VPC
+      vpc_endpoint_id        = (Optional) The ID of VPC endpoint to use for hosting internal SFTP server. Required if endpoint type is set to VPC_ENDPOINT
+      subnet_ids             = (Optional) List of subnets ids within the VPC for hosting SFTP server endpoint. Required if endpoint type is set to VPC
+      security_group_ids     = (Optional) List of security groups to attach to the SFTP endpoint. Supported only if endpoint is to type VPC. If left blank for VPC, a security group with port 22 open to the world will be created and attached
+      address_allocation_ids = (Optional) List of address allocation IDs to attach an Elastic IP address to your SFTP server endpoint. Supported only if endpoint type is set to VPC. If left blank for VPC, an EIP will be automatically created per subnet and attached
+    }```
+  EOT
 }
 
 variable "identity_provider_type" {
   type        = string
   default     = "SERVICE_MANAGED"
-  description = "The mode of authentication enabled for this service. The default value is SERVICE_MANAGED, which allows you to store and access SFTP user credentials within the service. API_GATEWAY."
+  description = "Mode of authentication to use for accessing the service. **Valid Values:** `SERVICE_MANAGED`, `API_GATEWAY`, `AWS_DIRECTORY_SERVICE` or `AWS_LAMBDA`"
 }
 
-variable "s3_bucket_id" {
+variable "api_gw_url" {
   type        = string
-  description = "The landing directory (folder) for a user when they log in to the server using their SFTP client."
-  sensitive   = true
+  default     = null
+  description = "URL of the service endpoint to authenticate users when `identity_provider_type` is of type `API_GATEWAY`"
 }
 
-variable "key_path" {
+variable "invocation_role" {
   type        = string
-  default     = ""
-  description = "Name  (e.g. `~/.ssh/id_rsa.pub`)."
-  sensitive   = true
+  default     = null
+  description = "ARN of the IAM role to authenticate the user when `identity_provider_type` is set to `API_GATEWAY`"
 }
-variable "sub_folder" {
+
+variable "directory_id" {
   type        = string
-  default     = ""
-  description = "Landind folder."
-  sensitive   = true
+  default     = null
+  description = "ID of the directory service to authenticate users when `identity_provider_type` is of type `AWS_DIRECTORY_SERVICE`"
 }
 
-variable "endpoint_type" {
+variable "function_arn" {
   type        = string
-  default     = "PUBLIC"
-  description = "(Optional) The ID of the VPC endpoint. This property can only be used when endpoint_type is set to VPC_ENDPOINT"
+  default     = null
+  description = "ARN of the lambda function to authenticate users when `identity_provider_type` is of type `AWS_LAMBDA`"
 }
 
-variable "vpc_id" {
+variable "logging_role" {
   type        = string
-  description = "(Optional) The VPC ID of the virtual private cloud in which the SFTP server's endpoint will be hosted. This property can only be used when endpoint_type is set to VPC."
-  default     = ""
+  default     = null
+  description = "ARN of an IAM role to allow to write SFTP users activity to Amazon CloudWatch logs"
 }
 
-variable "subnet_ids" {
-  description = "(Optional) A list of subnet IDs that are required to host your SFTP server endpoint in your VPC. This property can only be used when endpoint_type is set to VPC."
-  type        = list(string)
-  default     = []
+variable "force_destroy" {
+  type        = bool
+  default     = true
+  description = "Whether to delete all the users associated with server so that server can be deleted successfully. **Note:** Supported only if `identity_provider_type` is set to `SERVICE_MANAGED`"
 }
 
-variable "client_config" {
-  type = list(object({
-    user_name   = string
-    client_name = string
-  }))
+variable "security_policy_name" {
+  type        = string
+  default     = "TransferSecurityPolicy-2020-06"
+  description = "(Optional) Specifies the name of the security policy that is attached to the server. Possible values are TransferSecurityPolicy-2018-11, TransferSecurityPolicy-2020-06, TransferSecurityPolicy-FIPS-2020-06 and TransferSecurityPolicy-2022-03. Default value is: TransferSecurityPolicy-2018-11."
+}
+
+variable "host_key" {
+  type        = string
+  default     = null
+  description = "RSA private key that will be used to identify your server when clients connect to it over SFTP"
+}
+
+variable "hosted_zone" {
+  type        = string
+  default     = null
+  description = "Hosted zone name to create DNS entry for SFTP server"
+}
+
+variable "sftp_sub_domain" {
+  type        = string
+  default     = "sftp"
+  description = "DNS name for SFTP server. **NOTE: Only sub-domain name required. DO NOT provide entire URL**"
+}
+
+variable "sftp_users" {
+  type        = map(string)
+  default     = {}
+  description = <<-EOT
+    Map of users with key as username and value as their home directory. Home directory is the S3 bucket path which user should have access to
+    ```{
+      user = home_dir_path
+    }```
+  EOT
+}
+
+variable "sftp_users_ssh_key" {
+  type        = map(string)
+  default     = {}
+  description = <<-EOT
+    Map of users with key as username and value as their public SSH key
+    ```{
+      user = ssh_public_key_content
+    }```
+  EOT
 }
