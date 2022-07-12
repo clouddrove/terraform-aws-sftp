@@ -30,13 +30,13 @@ resource "aws_security_group" "sftp_vpc" {
 }
 
 resource "aws_eip" "sftp_vpc" {
-  count = module.this.enabled && var.endpoint_type == "VPC_ENDPOINT" && lookup(var.endpoint_details, "address_allocation_ids", null) == null ? length(lookup(var.endpoint_details, "subnet_ids")) : 0
+  count = module.this.enabled && var.endpoint_type == "VPC" && lookup(var.endpoint_details, "address_allocation_ids", null) == null ? length(lookup(var.endpoint_details, "subnet_ids")) : 0
   vpc   = true
   tags  = module.this.tags
 }
 
 resource "aws_transfer_server" "sftp_vpc" {
-  count         = module.this.enabled && var.endpoint_type == "VPC_ENDPOINT" ? 1 : 0
+  count         = module.this.enabled && var.endpoint_type != "PUBLIC" ? 1 : 0
   endpoint_type = var.endpoint_type
   protocols     = var.protocols
   certificate   = var.certificate_arn

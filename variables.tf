@@ -1,6 +1,6 @@
 variable "sftp_type" {
   type        = string
-  default     = "PUBLIC"
+  default     = "VPC"
   description = "Type of SFTP server. **Valid values:** `PUBLIC`, `VPC` or `VPC_ENDPOINT`"
 }
 
@@ -82,14 +82,14 @@ variable "force_destroy" {
 variable "security_policy_name" {
   type        = string
   default     = "TransferSecurityPolicy-2020-06"
-  description = "(Optional) Specifies the name of the security policy that is attached to the server. Possible values are TransferSecurityPolicy-2018-11, TransferSecurityPolicy-2020-06, TransferSecurityPolicy-FIPS-2020-06 and TransferSecurityPolicy-2022-03. Default value is: TransferSecurityPolicy-2018-11."
+  description = "(Optional) Specifies the name of the security policy that is attached to the server. Possible values are `TransferSecurityPolicy-2018-11`, `TransferSecurityPolicy-2020-06`, `TransferSecurityPolicy-FIPS-2020-06` and `TransferSecurityPolicy-2022-03`. Default value is: `TransferSecurityPolicy-2018-11`."
 }
 
 variable "host_key" {
   type        = string
   default     = null
-  description = "RSA private key that will be used to identify your server when clients connect to it over SFTP"
-}
+  description = "RSA private key that will be used to identify your server when clients connect to it over SFTP. "
+
 
 variable "hosted_zone" {
   type        = string
