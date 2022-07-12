@@ -1,5 +1,5 @@
 output "arn" {
-  value       = var.sftp_type == "PUBLIC" ? join(",", aws_transfer_server.public.*.arn) : join(",", aws_transfer_server.sftp_vpc.*.arn)
+  value       = var.endpoint_type == "PUBLIC" ? join(",", aws_transfer_server.public.*.arn) : join(",", aws_transfer_server.sftp_vpc.*.arn)
   description = "ARN of transfer server"
 }
 

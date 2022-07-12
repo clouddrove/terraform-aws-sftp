@@ -1,6 +1,6 @@
 locals {
-  server_id = var.sftp_type == "PUBLIC" ? join(",", aws_transfer_server.public.*.id) : join(",", aws_transfer_server.sftp_vpc.*.id)
-  server_ep = var.sftp_type == "PUBLIC" ? join(",", aws_transfer_server.public.*.endpoint) : join(",", aws_transfer_server.sftp_vpc.*.endpoint)
+  server_id = var.endpoint_type == "PUBLIC" ? join(",", aws_transfer_server.public.*.id) : join(",", aws_transfer_server.sftp_vpc.*.id)
+  server_ep = var.endpoint_type == "PUBLIC" ? join(",", aws_transfer_server.public.*.endpoint) : join(",", aws_transfer_server.sftp_vpc.*.endpoint)
 }
 
 
