@@ -33,20 +33,24 @@ variable "sub_folder" {
 variable "endpoint_type" {
   type        = string
   default     = "PUBLIC"
-  description = "The type of endpoint that you want your SFTP server connect to. If you connect to a VPC (or VPC_ENDPOINT), your SFTP server isn't accessible over the public internet. If you want to connect your SFTP server via public internet, set PUBLIC. Defaults to PUBLIC"
+  description = "(Optional) The ID of the VPC endpoint. This property can only be used when endpoint_type is set to VPC_ENDPOINT"
 }
 
 variable "vpc_id" {
   type        = string
+  description = "(Optional) The VPC ID of the virtual private cloud in which the SFTP server's endpoint will be hosted. This property can only be used when endpoint_type is set to VPC."
   default     = ""
-  description = "VPC ID"
+}
+
+variable "subnet_ids" {
+  description = "(Optional) A list of subnet IDs that are required to host your SFTP server endpoint in your VPC. This property can only be used when endpoint_type is set to VPC."
+  type        = list(string)
+  default     = []
 }
 
 variable "client_config" {
   type = list(object({
-    user_name    = string
-    client_name  = string
-    role         = string
-    s3_bucket_id = string
+    user_name   = string
+    client_name = string
   }))
 }
