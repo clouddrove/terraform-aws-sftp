@@ -1,25 +1,11 @@
-# Module      : IAM ROLE
-# Description : This data source can be used to fetch information about a specific IAM role.
-resource "aws_iam_role" "sftp_vpc" {
-  count = module.this.enabled ? 1 : 0
-
-  name               = module.this.id
-  assume_role_policy = data.aws_iam_policy_document.transfer_server_assume_role.json
-}
-
-# Module      : IAM ROLE POLICY
-# Description : Provides an IAM role policy.
-resource "aws_iam_role_policy" "sftp_vpc" {
-  count = module.this.enabled ? 1 : 0
-
-  name   = module.this.id
-  role   = join("", aws_iam_role.transfer_server_role.*.name)
-  policy = data.aws_iam_policy_document.transfer_server_assume_policy.json
+locals {
+  server_id = var.sftp_type == "PUBLIC" ? join(",", aws_transfer_server.public.*.id) : join(",", aws_transfer_server.vpc.*.id)
+  server_ep = var.sftp_type == "PUBLIC" ? join(",", aws_transfer_server.public.*.endpoint) : join(",", aws_transfer_server.vpc.*.endpoint)
 }
 
 
 resource "aws_security_group" "sftp_vpc" {
-  count       = var.endpoint_type == "VPC_ENDPOINT" && lookup(var.endpoint_details, "security_group_ids", null) == null ? 1 : 0
+  count       = module.this.enabled && var.endpoint_type == "VPC_ENDPOINT" && lookup(var.endpoint_details, "security_group_ids", null) == null ? 1 : 0
   name        = "${local.name}-sftp-vpc"
   description = "Security group for ${module.this.id}"
   vpc_id      = lookup(var.endpoint_details, "vpc_id")
@@ -50,7 +36,7 @@ resource "aws_eip" "sftp_vpc" {
 }
 
 resource "aws_transfer_server" "sftp_vpc" {
-  count         = var.endpoint_type == "VPC_ENDPOINT" ? 1 : 0
+  count         = module.this.enabled && var.endpoint_type == "VPC_ENDPOINT" ? 1 : 0
   endpoint_type = var.endpoint_type
   protocols     = var.protocols
   certificate   = var.certificate_arn
