@@ -36,8 +36,8 @@ resource "aws_eip" "sftp_vpc" {
 }
 
 resource "aws_transfer_server" "public" {
-  count                  = var.sftp_type == "PUBLIC" ? 1 : 0
-  endpoint_type          = var.sftp_type
+  count                  = var.endpoint_type == "PUBLIC" ? 1 : 0
+  endpoint_type          = var.endpoint_type
   protocols              = var.protocols
   certificate            = var.certificate_arn
   identity_provider_type = var.identity_provider_type
