@@ -1,6 +1,6 @@
 locals {
-  server_id = var.sftp_type == "PUBLIC" ? join(",", aws_transfer_server.public.*.id) : join(",", aws_transfer_server.vpc.*.id)
-  server_ep = var.sftp_type == "PUBLIC" ? join(",", aws_transfer_server.public.*.endpoint) : join(",", aws_transfer_server.vpc.*.endpoint)
+  server_id = var.sftp_type == "PUBLIC" ? join(",", aws_transfer_server.public.*.id) : join(",", aws_transfer_server.sftp_vpc.*.id)
+  server_ep = var.sftp_type == "PUBLIC" ? join(",", aws_transfer_server.public.*.endpoint) : join(",", aws_transfer_server.sftp_vpc.*.endpoint)
 }
 
 
@@ -33,6 +33,24 @@ resource "aws_eip" "sftp_vpc" {
   count = module.this.enabled && var.endpoint_type == "VPC" && lookup(var.endpoint_details, "address_allocation_ids", null) == null ? length(lookup(var.endpoint_details, "subnet_ids")) : 0
   vpc   = true
   tags  = module.this.tags
+}
+
+resource "aws_transfer_server" "public" {
+  count                  = var.sftp_type == "PUBLIC" ? 1 : 0
+  endpoint_type          = var.sftp_type
+  protocols              = var.protocols
+  certificate            = var.certificate_arn
+  identity_provider_type = var.identity_provider_type
+  url                    = var.api_gw_url
+  invocation_role        = var.invocation_role
+  directory_id           = var.directory_id
+  function               = var.function_arn
+  logging_role           = var.logging_role == null ? join(",", aws_iam_role.logging.*.arn) : var.logging_role
+  force_destroy          = var.force_destroy
+  security_policy_name   = var.security_policy_name
+  host_key               = var.host_key
+
+  tags = module.this.tags
 }
 
 resource "aws_transfer_server" "sftp_vpc" {

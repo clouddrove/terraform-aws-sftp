@@ -1,5 +1,5 @@
 output "arn" {
-  value       = var.sftp_type == "PUBLIC" ? join(",", aws_transfer_server.public.*.arn) : join(",", aws_transfer_server.vpc.*.arn)
+  value       = var.sftp_type == "PUBLIC" ? join(",", aws_transfer_server.public.*.arn) : join(",", aws_transfer_server.sftp_vpc.*.arn)
   description = "ARN of transfer server"
 }
 
@@ -13,10 +13,10 @@ output "endpoint" {
   description = "Endpoint of transfer server"
 }
 
-output "domain_name" {
-  value       = var.hosted_zone == null ? null : join(",", aws_route53_record.sftp.*.fqdn)
-  description = "Custom DNS name mapped in Route53 for transfer server"
-}
+# output "domain_name" {
+#   value       = var.hosted_zone == null ? null : join(",", aws_route53_record.sftp.*.fqdn)
+#   description = "Custom DNS name mapped in Route53 for transfer server"
+# }
 
 output "sftp_sg_id" {
   value       = var.sftp_type == "VPC" && lookup(var.endpoint_details, "security_group_ids", null) == null ? join(",", aws_security_group.sftp_vpc.*.id) : null
