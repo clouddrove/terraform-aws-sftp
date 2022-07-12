@@ -19,11 +19,11 @@ output "endpoint" {
 # }
 
 output "sftp_sg_id" {
-  value       = var.sftp_type == "VPC" && lookup(var.endpoint_details, "security_group_ids", null) == null ? join(",", aws_security_group.sftp_vpc.*.id) : null
+  value       = var.endpoint_type == "VPC" && lookup(var.endpoint_details, "security_group_ids", null) == null ? join(",", aws_security_group.sftp_vpc.*.id) : null
   description = "ID of security group created for SFTP server. Available only if SFTP type is VPC and security group is not provided by you"
 }
 
 output "sftp_eip" {
-  value       = var.sftp_type == "VPC" && lookup(var.endpoint_details, "address_allocation_ids", null) == null ? aws_eip.sftp_vpc.*.public_ip : null
+  value       = var.endpoint_type == "VPC" && lookup(var.endpoint_details, "address_allocation_ids", null) == null ? aws_eip.sftp_vpc.*.public_ip : null
   description = "Elastic IP attached to the SFTP server. Available only if SFTP type is VPC and allocation id is not provided by you"
 }
