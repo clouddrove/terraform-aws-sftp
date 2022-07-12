@@ -89,7 +89,7 @@ variable "host_key" {
   type        = string
   default     = null
   description = "RSA private key that will be used to identify your server when clients connect to it over SFTP. "
-
+}
 
 variable "hosted_zone" {
   type        = string
@@ -118,9 +118,9 @@ variable "sftp_users_ssh_key" {
   type        = map(string)
   default     = {}
   description = <<-EOT
-    Map of users with key as username and value as their public SSH key
-    ```{
-      user = ssh_public_key_content
-    }```
-  EOT
+      Map of users with key as username and value as their public SSH key
+      ```{
+        user = ssh_public_key_content
+      }```
+    EOT
 }
