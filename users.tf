@@ -1,8 +1,8 @@
 resource "aws_iam_role" "user" {
   for_each           = module.this.enabled && length(var.sftp_users) > 0 ? { for s in var.sftp_users : s.user_name => s } : {}
-  name               = "${module.this.id}-sftp-user-${each.value.user_name}"
+  name               = "${module.this.id}-user-${each.value.user_name}"
   assume_role_policy = <<EOF
-    {
+{
     "Version": "2012-10-17",
     "Statement": [
         {
@@ -13,8 +13,8 @@ resource "aws_iam_role" "user" {
         "Action": "sts:AssumeRole"
         }
     ]
-    }
-    EOF
+}
+EOF
 }
 
 resource "aws_iam_role_policy" "user" {
