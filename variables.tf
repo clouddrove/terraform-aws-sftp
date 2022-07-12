@@ -1,4 +1,4 @@
-variable "sftp_type" {
+variable "endpoint_type" {
   type        = string
   default     = "VPC"
   description = "Type of SFTP server. **Valid values:** `PUBLIC`, `VPC` or `VPC_ENDPOINT`"
