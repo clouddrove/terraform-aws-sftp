@@ -80,29 +80,6 @@ resource "aws_transfer_server" "sftp_vpc" {
   tags                 = module.this.tags
 }
 
-# Module      : AWS TRANSFER USER
-# Description : Provides a AWS Transfer User resource.
-# resource "aws_transfer_user" "transfer_server_user" {
-#   for_each = module.this.enabled && length(var.client_config) > 0 ? { for s in var.client_config : s.user_name => s } : {}
-
-#   server_id      = var.endpoint_type == "VPC" ? join("", aws_transfer_server.transfer_server_vpc.*.id) : join("", aws_transfer_server.transfer_server.*.id)
-#   user_name      = each.value.user_name
-#   role           = join("", aws_iam_role.transfer_server_role.*.arn)
-#   home_directory = format("/%s/%s", module.s3.bucket_id, each.value.client_name)
-#   tags           = merge(module.this.tags, { for k, v in var.client_config : s.client_name => v.client_name })
-# }
-
-# Module      : AWS TRANSFER SSH KEY
-# Description : Provides a AWS Transfer User SSH Key resource.
-# resource "aws_transfer_ssh_key" "transfer_server_ssh_key" {
-#   count = module.this.enabled ? 1 : 0
-
-#   server_id = join("", aws_transfer_server.transfer_server.*.id)
-#   user_name = join("", aws_transfer_user.transfer_server_user.*.user_name)
-#   body      = var.public_key == "" ? file(var.key_path) : var.public_key
-# }
-
-
 resource "aws_iam_role" "logging" {
   count = module.this.enabled ? 1 : 0
   name  = "${module.this.id}-transfer-logging"
@@ -146,4 +123,19 @@ resource "aws_iam_role_policy" "logging" {
   ]
 }
 POLICY
+}
+
+
+data "aws_route53_zone" "this" {
+  count = var.hosted_zone == null ? 0 : 1
+  name  = var.hosted_zone
+}
+
+resource "aws_route53_record" "sftp" {
+  count   = var.hosted_zone == null ? 0 : 1
+  zone_id = join(",", data.aws_route53_zone.primary.*.zone_id)
+  name    = "${var.sftp_sub_domain}.${var.hosted_zone}"
+  type    = "CNAME"
+  ttl     = "60"
+  records = [local.server_ep]
 }
