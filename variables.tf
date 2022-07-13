@@ -73,7 +73,7 @@ variable "logging_role" {
   description = "ARN of an IAM role to allow to write SFTP users activity to Amazon CloudWatch logs"
 }
 
-variable "force_destroy" {
+variable "sftp_force_destroy" {
   type        = bool
   default     = true
   description = "Whether to delete all the users associated with server so that server can be deleted successfully. **Note:** Supported only if `identity_provider_type` is set to `SERVICE_MANAGED`"

@@ -46,7 +46,7 @@ resource "aws_transfer_server" "public" {
   directory_id           = var.directory_id
   function               = var.function_arn
   logging_role           = var.logging_role == null ? join(",", aws_iam_role.logging.*.arn) : var.logging_role
-  force_destroy          = var.force_destroy
+  force_destroy          = var.sftp_force_destroy
   security_policy_name   = var.security_policy_name
   host_key               = var.host_key
 
@@ -74,7 +74,7 @@ resource "aws_transfer_server" "sftp_vpc" {
   function               = var.function_arn
 
   logging_role         = var.logging_role == null ? join(",", aws_iam_role.logging.*.arn) : var.logging_role
-  force_destroy        = var.force_destroy
+  force_destroy        = var.sftp_force_destroy
   security_policy_name = var.security_policy_name
   host_key             = var.host_key
   tags                 = module.this.tags
