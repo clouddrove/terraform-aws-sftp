@@ -27,15 +27,22 @@ resource "aws_iam_role_policy" "user" {
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "AllowListingOfUserFolder",
-      "Action": [
-        "s3:ListBucket",
-        "s3:GetBucketLocation"
-      ],
-      "Effect": "Allow",
-      "Resource": [
-        "arn:aws:s3:::$${Transfer:HomeBucket}"
-      ]
+        "Sid": "AllowListingOfUserFolder",
+        "Action": [
+            "s3:ListBucket"
+        ],
+        "Effect": "Allow",
+        "Resource": [
+            "arn:aws:s3:::${transfer:HomeBucket}"
+        ],
+        "Condition": {
+            "StringLike": {
+                "s3:prefix": [
+                    "${transfer:HomeFolder}/*",
+                    "${transfer:HomeFolder}"
+                ]
+            }
+        }
     },
     {
       "Sid": "HomeDirObjectAccess",
