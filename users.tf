@@ -47,7 +47,7 @@ resource "aws_iam_role_policy" "user" {
         "s3:DeleteObject",
         "s3:GetObjectVersion"
       ],
-    "Resource" : "arn:aws:s3:::${module.s3.*.bucket_id}/${each.value.user_name}/*"
+    "Resource" : "arn:aws:s3:::${module.s3.*.bucket_id}/${each.value.home_directory}/*"
 }
   ]
 }
@@ -58,7 +58,7 @@ resource "aws_transfer_user" "this" {
   for_each       = module.this.enabled && length(var.sftp_users) > 0 ? { for s in var.sftp_users : s.user_name => s } : {}
   server_id      = local.server_id
   user_name      = each.value.user_name
-  home_directory = "/${each.value.user_name}"
+  home_directory = "/${each.value.home_directory}"
   role           = aws_iam_role.user[each.value.user_name].arn
   tags           = module.this.tags
 }
