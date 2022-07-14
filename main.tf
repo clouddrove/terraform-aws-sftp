@@ -36,7 +36,7 @@ resource "aws_eip" "sftp_vpc" {
 }
 
 resource "aws_transfer_server" "public" {
-  count                  = var.endpoint_type == "PUBLIC" ? 1 : 0
+  count                  = module.this.enabled && var.endpoint_type == "PUBLIC" ? 1 : 0
   endpoint_type          = var.endpoint_type
   protocols              = var.protocols
   certificate            = var.certificate_arn
@@ -64,7 +64,7 @@ resource "aws_transfer_server" "sftp_vpc" {
     vpc_endpoint_id        = lookup(var.endpoint_details, "vpc_endpoint_id", null)
     subnet_ids             = lookup(var.endpoint_details, "subnet_ids", null)
     security_group_ids     = lookup(var.endpoint_details, "security_group_ids", aws_security_group.sftp_vpc.*.id)
-    address_allocation_ids = lookup(var.endpoint_details, "address_allocation_ids", aws_eip.sftp_vpc.*.allocation_id)
+    address_allocation_ids = lookup(var.endpoint_details, "address_allocation_ids", null) == null ? aws_eip.sftp_vpc.*.allocation_id : lookup(var.endpoint_details, "address_allocation_ids", null)
   }
 
   identity_provider_type = var.identity_provider_type
