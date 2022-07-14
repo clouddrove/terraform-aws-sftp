@@ -257,11 +257,6 @@ variable "s3_replication_rules" {
   default     = null
   description = "Specifies the replication rules for S3 bucket replication if enabled. You must also set s3_replication_enabled to true."
 }
-locals {
-  # Deprecate `replication_rules` in favor of `s3_replication_rules` to keep all the replication related
-  # inputs grouped under s3_replica[tion]
-  s3_replication_rules = var.replication_rules == null ? var.s3_replication_rules : var.replication_rules
-}
 
 variable "s3_replication_source_roles" {
   type        = list(string)
