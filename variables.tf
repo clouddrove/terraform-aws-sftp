@@ -104,12 +104,16 @@ variable "sftp_sub_domain" {
 }
 
 variable "sftp_users" {
-  type        = list(map(any))
+  type = list(object({
+    user           = string
+    home_directory = string(optional)
+    ssh_key        = string(optional)
+  }))
   default     = []
   description = <<-EOT
     Map of users with key as username and value as their home directory. Home directory is the S3 bucket path which user should have access to
     ```{
-      user      = name_of_user
+      user           = name_of_user
       home_directory = home_dir_path
       ssh_key        = ssh_public_key_content
     }```
