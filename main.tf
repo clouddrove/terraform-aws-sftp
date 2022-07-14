@@ -134,7 +134,7 @@ data "aws_route53_zone" "this" {
 resource "aws_route53_record" "sftp" {
   count   = var.hosted_zone == null ? 0 : 1
   zone_id = join(",", data.aws_route53_zone.primary.*.zone_id)
-  name    = var.sftp_sub_domain != "" ? "${var.sftp_sub_domain}.${var.hosted_zone}" : "${var.sftp_sub_domain}.${var.hosted_zone}"
+  name    = var.sftp_sub_domain != "" ? "${var.sftp_sub_domain}.${var.hosted_zone}" : "${module.this.name}.${var.hosted_zone}"
   type    = "CNAME"
   ttl     = "60"
   records = [local.server_ep]
