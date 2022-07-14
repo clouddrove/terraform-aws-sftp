@@ -47,7 +47,7 @@ resource "aws_iam_role_policy" "user" {
         "s3:DeleteObject",
         "s3:GetObjectVersion"
       ],
-      ${each.value.home_directory == null} ? "Resource" : "arn:aws:s3:::${trimsuffix(module.s3.*.bucket_id, "/")}/*" : "Resource" : "arn:aws:s3:::${trimsuffix(each.value.home_directory, "/")}/*"
+    "Resource" : "arn:aws:s3:::${module.s3.*.bucket_id}/${each.value.user_name}/*"
 }
   ]
 }
