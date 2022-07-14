@@ -106,8 +106,8 @@ variable "sftp_sub_domain" {
 variable "sftp_users" {
   type = list(object({
     user           = string
-    home_directory = string(optional)
-    ssh_key        = string(optional)
+    home_directory = optional(string)
+    ssh_key        = optional(string)
   }))
   default     = []
   description = <<-EOT
