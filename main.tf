@@ -127,12 +127,12 @@ POLICY
 
 
 data "aws_route53_zone" "this" {
-  count = var.hosted_zone == null ? 0 : 1
+  count = module.this.enabled && var.hosted_zone != null ? 0 : 1
   name  = var.hosted_zone
 }
 
 resource "aws_route53_record" "this" {
-  count   = var.hosted_zone == null ? 0 : 1
+  count   = module.this.enabled && var.hosted_zone != null ? 0 : 1
   zone_id = join(",", data.aws_route53_zone.this.*.zone_id)
   name    = var.sftp_sub_domain != "" ? "${var.sftp_sub_domain}.${var.hosted_zone}" : "${module.this.name}.${var.hosted_zone}"
   type    = "CNAME"

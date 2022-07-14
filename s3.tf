@@ -1,5 +1,5 @@
 module "s3" {
-  count                  = module.this.enabled != false ? length(toset(var.bucket_name)) : null
+  count                  = module.this.enabled ? 1 : 0
   source                 = "cloudposse/s3-bucket/aws"
   version                = "2.0.3"
   bucket_name            = "${module.this.id}-bucket"
