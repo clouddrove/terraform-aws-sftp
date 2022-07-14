@@ -63,7 +63,7 @@ resource "aws_transfer_server" "sftp_vpc" {
     vpc_id                 = lookup(var.endpoint_details, "vpc_id", null)
     vpc_endpoint_id        = lookup(var.endpoint_details, "vpc_endpoint_id", null)
     subnet_ids             = lookup(var.endpoint_details, "subnet_ids", null)
-    security_group_ids     = lookup(var.endpoint_details, "security_group_ids", aws_security_group.sftp_vpc.*.id)
+    security_group_ids     = lookup(var.endpoint_details, "security_group_ids", null) == null ? aws_security_group.sftp_vpc.*.id : lookup(var.endpoint_details, "security_group_ids", null)
     address_allocation_ids = lookup(var.endpoint_details, "address_allocation_ids", null) == null ? aws_eip.sftp_vpc.*.allocation_id : lookup(var.endpoint_details, "address_allocation_ids", null)
   }
 
