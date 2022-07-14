@@ -6,7 +6,7 @@ locals {
 
 resource "aws_security_group" "sftp_vpc" {
   count       = module.this.enabled && var.endpoint_type == "VPC" && lookup(var.endpoint_details, "security_group_ids", null) == null ? 1 : 0
-  name        = "${module.this.id}-sftp-sg"
+  name        = "${module.this.id}-sg"
   description = "Security group for ${module.this.id}"
   vpc_id      = lookup(var.endpoint_details, "vpc_id")
 
