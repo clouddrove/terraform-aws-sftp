@@ -5,7 +5,7 @@ module "s3_bucket" {
   environment             = module.this.environment
   name                    = module.this.name
   logging_bucket_grants   = var.logging_bucket_grants
-  logging_lifecycle_rules = logging_lifecycle_rules
+  logging_lifecycle_rules = var.logging_lifecycle_rules
 }
 
 variable "s3_bucket_replication_region" {
