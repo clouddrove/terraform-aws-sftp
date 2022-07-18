@@ -13,7 +13,7 @@ variable "s3_bucket_replication_region" {
   default     = ""
 }
 
-variable "s3_bucket_configuration" {
+variable "s3_buckets" {
   description = "s3 bucket configuration"
   type = map(object({
     acl = optional(string)
