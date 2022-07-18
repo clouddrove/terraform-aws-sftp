@@ -4,7 +4,7 @@ variable "endpoint_type" {
   description = "Type of SFTP server."
   validation {
     condition     = contains(["PUBLIC", "VPC", "VPC_ENDPOINT"], var.endpoint_type)
-    error_message = "Valid values for var: endpoint_type are  `PUBLIC`, `VPC` or `VPC_ENDPOINT`"
+    error_message = "Valid values for var: endpoint_type are  `PUBLIC`, `VPC` or `VPC_ENDPOINT`."
   }
 }
 
@@ -14,7 +14,7 @@ variable "protocols" {
   description = "List of file transfer protocol(s) over which your FTP client can connect to your server endpoint."
   validation {
     condition     = contains(["SFTP", "FTP", "FTPS"], element(var.protocols, 0))
-    error_message = "Valid values for var: protocols are  `FTP`, `FTPS` and `SFTP`"
+    error_message = "Valid values for var: protocols are  `FTP`, `FTPS` and `SFTP`."
   }
 }
 
@@ -51,7 +51,7 @@ variable "identity_provider_type" {
   description = "Mode of authentication to use for accessing the service."
   validation {
     condition     = contains(["SERVICE_MANAGED", "API_GATEWAY", "AWS_DIRECTORY_SERVICE", "AWS_LAMBDA"], var.identity_provider_type)
-    error_message = "Valid values for var: identity_provider_type are  `SERVICE_MANAGED`, `API_GATEWAY`, `AWS_DIRECTORY_SERVICE` or `AWS_LAMBDA`"
+    error_message = "Valid values for var: identity_provider_type are  `SERVICE_MANAGED`, `API_GATEWAY`, `AWS_DIRECTORY_SERVICE` or `AWS_LAMBDA`."
   }
 }
 
