@@ -1,0 +1,21 @@
+name: Generate terraform docs
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  docs:
+    runs-on: humnai-runner
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+
+    - name: Render terraform docs and push changes back to PR
+      uses: terraform-docs/gh-actions@main
+      with:
+        working-dir: .
+        output-file: README.md
+        output-method: inject
+        git-push: "true"
