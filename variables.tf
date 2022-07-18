@@ -3,7 +3,7 @@ variable "endpoint_type" {
   default     = "VPC"
   description = "Type of SFTP server."
   validation {
-    condition     = contains(["PUBLIC", "VPC", "VPC_ENDPOINT"], element(var.endpoint_type, 0))
+    condition     = contains(["PUBLIC", "VPC", "VPC_ENDPOINT"], var.endpoint_type)
     error_message = "Valid values for var: endpoint_type are  `PUBLIC`, `VPC` or `VPC_ENDPOINT`"
   }
 }
@@ -50,7 +50,7 @@ variable "identity_provider_type" {
   default     = "SERVICE_MANAGED"
   description = "Mode of authentication to use for accessing the service."
   validation {
-    condition     = contains(["SERVICE_MANAGED", "API_GATEWAY", "AWS_DIRECTORY_SERVICE", "AWS_LAMBDA"], element(var.identity_provider_type, 0))
+    condition     = contains(["SERVICE_MANAGED", "API_GATEWAY", "AWS_DIRECTORY_SERVICE", "AWS_LAMBDA"], var.identity_provider_type)
     error_message = "Valid values for var: identity_provider_type are  `SERVICE_MANAGED`, `API_GATEWAY`, `AWS_DIRECTORY_SERVICE` or `AWS_LAMBDA`"
   }
 }
