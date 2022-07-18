@@ -3,7 +3,6 @@ module "s3_bucket" {
   s3_buckets              = var.s3_buckets
   namespace               = module.this.namespace
   environment             = module.this.environment
-  name                    = module.this.name
   logging_bucket_grants   = var.logging_bucket_grants
   logging_lifecycle_rules = var.logging_lifecycle_rules
 }
