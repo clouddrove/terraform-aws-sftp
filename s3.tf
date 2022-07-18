@@ -1,11 +1,17 @@
 module "s3_bucket" {
-  source                  = "git@github.com:cloudposse/terraform-aws-s3-bucket.git?ref=tags/0.0.5"
+  source                  = "git@github.com:humn-ai/terraform-aws-s3-bucket.git?ref=tags/0.0.5"
   s3_buckets              = var.s3_buckets
   namespace               = module.this.namespace
   environment             = module.this.environment
   name                    = module.this.name
   logging_bucket_grants   = var.logging_bucket_grants
   logging_lifecycle_rules = logging_lifecycle_rules
+}
+
+variable "s3_bucket_replication_region" {
+  description = "The AWS region (e.g. ap-southeast-2). Specific region for s3 bucket replication destination"
+  type        = string
+  default     = ""
 }
 
 variable "s3_buckets" {
