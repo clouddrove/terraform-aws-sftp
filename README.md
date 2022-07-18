@@ -98,32 +98,32 @@ Here is an example of how you can use this module in your inventory structure:
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| attributes | Additional attributes (e.g. `1`). | `list(any)` | `[]` | no |
-| delimiter | Delimiter to be used between `organization`, `environment`, `name` and `attributes`. | `string` | `"-"` | no |
-| enable\_sftp | Set to false to prevent the module from creating any resources. | `bool` | `true` | no |
-| endpoint\_type | The type of endpoint that you want your SFTP server connect to. If you connect to a VPC (or VPC\_ENDPOINT), your SFTP server isn't accessible over the public internet. If you want to connect your SFTP server via public internet, set PUBLIC. Defaults to PUBLIC | `string` | `"PUBLIC"` | no |
-| environment | Environment (e.g. `prod`, `dev`, `staging`). | `string` | `""` | no |
-| identity\_provider\_type | The mode of authentication enabled for this service. The default value is SERVICE\_MANAGED, which allows you to store and access SFTP user credentials within the service. API\_GATEWAY. | `string` | `"SERVICE_MANAGED"` | no |
-| key\_path | Name  (e.g. `~/.ssh/id_rsa.pub`). | `string` | `""` | no |
-| label\_order | Label order, e.g. `name`,`application`. | `list(any)` | `[]` | no |
-| managedby | ManagedBy, eg 'CloudDrove'. | `string` | `"hello@clouddrove.com"` | no |
-| name | Name  (e.g. `app` or `cluster`). | `string` | `""` | no |
-| public\_key | Name  (e.g. `ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQ`). | `string` | `""` | no |
-| repository | Terraform current module repo | `string` | `"https://github.com/clouddrove/terraform-aws-sftp"` | no |
-| s3\_bucket\_id | The landing directory (folder) for a user when they log in to the server using their SFTP client. | `string` | n/a | yes |
-| sub\_folder | Landind folder. | `string` | `""` | no |
-| tags | Additional tags (e.g. map(`BusinessUnit`,`XYZ`). | `map(any)` | `{}` | no |
-| user\_name | User name for SFTP server. | `string` | n/a | yes |
-| vpc\_id | VPC ID | `string` | `""` | no |
+| Name                     | Description                                                                                                                                                                                                                                                         | Type        | Default                                              | Required |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- | ---------------------------------------------------- | :------: |
+| attributes               | Additional attributes (e.g. `1`).                                                                                                                                                                                                                                   | `list(any)` | `[]`                                                 |    no    |
+| delimiter                | Delimiter to be used between `organization`, `environment`, `name` and `attributes`.                                                                                                                                                                                | `string`    | `"-"`                                                |    no    |
+| enable\_sftp             | Set to false to prevent the module from creating any resources.                                                                                                                                                                                                     | `bool`      | `true`                                               |    no    |
+| endpoint\_type           | The type of endpoint that you want your SFTP server connect to. If you connect to a VPC (or VPC\_ENDPOINT), your SFTP server isn't accessible over the public internet. If you want to connect your SFTP server via public internet, set PUBLIC. Defaults to PUBLIC | `string`    | `"PUBLIC"`                                           |    no    |
+| environment              | Environment (e.g. `prod`, `dev`, `staging`).                                                                                                                                                                                                                        | `string`    | `""`                                                 |    no    |
+| identity\_provider\_type | The mode of authentication enabled for this service. The default value is SERVICE\_MANAGED, which allows you to store and access SFTP user credentials within the service. API\_GATEWAY.                                                                            | `string`    | `"SERVICE_MANAGED"`                                  |    no    |
+| key\_path                | Name  (e.g. `~/.ssh/id_rsa.pub`).                                                                                                                                                                                                                                   | `string`    | `""`                                                 |    no    |
+| label\_order             | Label order, e.g. `name`,`application`.                                                                                                                                                                                                                             | `list(any)` | `[]`                                                 |    no    |
+| managedby                | ManagedBy, eg 'CloudDrove'.                                                                                                                                                                                                                                         | `string`    | `"hello@clouddrove.com"`                             |    no    |
+| name                     | Name  (e.g. `app` or `cluster`).                                                                                                                                                                                                                                    | `string`    | `""`                                                 |    no    |
+| public\_key              | Name  (e.g. `ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQ`).                                                                                                                                                                                     | `string`    | `""`                                                 |    no    |
+| repository               | Terraform current module repo                                                                                                                                                                                                                                       | `string`    | `"https://github.com/clouddrove/terraform-aws-sftp"` |    no    |
+| s3\_bucket\_id           | The landing directory (folder) for a user when they log in to the server using their SFTP client.                                                                                                                                                                   | `string`    | n/a                                                  |   yes    |
+| sub\_folder              | Landind folder.                                                                                                                                                                                                                                                     | `string`    | `""`                                                 |    no    |
+| tags                     | Additional tags (e.g. map(`BusinessUnit`,`XYZ`).                                                                                                                                                                                                                    | `map(any)`  | `{}`                                                 |    no    |
+| user\_name               | User name for SFTP server.                                                                                                                                                                                                                                          | `string`    | n/a                                                  |   yes    |
+| vpc\_id                  | VPC ID                                                                                                                                                                                                                                                              | `string`    | `""`                                                 |    no    |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| id | The Server ID of the Transfer Server (e.g. s-12345678). |
-| tags | A mapping of tags to assign to the resource. |
+| Name                       | Description                                                                                 |
+| -------------------------- | ------------------------------------------------------------------------------------------- |
+| id                         | The Server ID of the Transfer Server (e.g. s-12345678).                                     |
+| tags                       | A mapping of tags to assign to the resource.                                                |
 | transfer\_server\_endpoint | The endpoint of the Transfer Server (e.g. s-12345678.server.transfer.REGION.amazonaws.com). |
 
 
