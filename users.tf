@@ -68,7 +68,7 @@ resource "aws_transfer_user" "this" {
   for_each       = module.this.enabled && length(var.sftp_users) > 0 ? { for s in var.sftp_users : s.user_name => s } : {}
   server_id      = local.server_id
   user_name      = each.value.user_name
-  home_directory = "/${module.s3.s3_buckets.claims.bucket_id[0]}/${each.value.home_directory}"
+  home_directory = "/${module.s3.s3_buckets.claims.bucket_id}/${each.value.home_directory}"
   role           = aws_iam_role.user[each.value.user_name].arn
   tags           = module.this.tags
 }
