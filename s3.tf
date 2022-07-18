@@ -1,5 +1,5 @@
 module "s3_bucket" {
-  source                  = "git@github.com:humn-ai/terraform-aws-s3-bucket.git?ref=tags/0.0.5"
+  source                  = "git@github.com:humn-ai/tf-mod-s3-bucket.git?ref=tags/0.0.5"
   s3_buckets              = var.s3_buckets
   namespace               = module.this.namespace
   environment             = module.this.environment
