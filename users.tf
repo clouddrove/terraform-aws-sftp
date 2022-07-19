@@ -33,7 +33,7 @@ resource "aws_iam_role_policy" "user" {
       ],
       "Effect":"Deny",
       "Resource":"arn:aws:s3:::${module.s3.s3_buckets[module.this.name].bucket_id}/*/"
-    }
+    },
     {
       "Sid":"ReadWriteS3",
       "Action": [
@@ -54,7 +54,7 @@ resource "aws_iam_role_policy" "user" {
         "s3:PutObjectACL"
       ],
       "Resource": ["arn:aws:s3:::${module.s3.s3_buckets[module.this.name].bucket_id}/*"]
-    }
+    },
     {
         "Sid": "AllowListingOfUserFolder",
         "Action": [
