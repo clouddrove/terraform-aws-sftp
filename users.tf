@@ -66,6 +66,8 @@ resource "aws_iam_role_policy" "user" {
       "Action": [
         "s3:PutObject",
         "s3:GetObject",
+        "s3:DeleteObjectVersion",
+        "s3:DeleteObject",
         "s3:GetObjectVersion"
       ],
     "Resource" : [
