@@ -44,7 +44,7 @@ usage : |-
   ```hcl
     module "sftp" {
           source                    = "clouddrove/sftp/aws"
-          version                   = "0.15.0"
+          version                   = "1.3.0"
           name                      = "sftp"
           environment               = "test"
           label_order               = ["name", "environment"]
