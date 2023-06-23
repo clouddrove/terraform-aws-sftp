@@ -82,7 +82,7 @@ module "s3_bucket" {
 ################################################################################
 
 module "sftp" {
-  source                 = "../.."
+  source                 = "../../"
   name                   = "sftp"
   environment            = "test"
   label_order            = ["environment", "name"]
