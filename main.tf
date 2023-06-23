@@ -206,17 +206,6 @@ resource "aws_transfer_server" "transfer_server" {
   }
 
 }
-
-# Module      : AWS TRANSFER tags
-# Description : Provides a AWS Transfer tags.
-resource "aws_transfer_tag" "transfer_tags" {
-  for_each = var.transfer_tags
-
-  resource_arn = aws_transfer_server.transfer_server[0].arn
-  key          = each.key
-  value        = each.value
-}
-
 # Module      : AWS TRANSFER USER
 # Description : Provides a AWS Transfer User resource.
 resource "aws_transfer_user" "transfer_server_user" {

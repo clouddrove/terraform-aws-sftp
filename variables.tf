@@ -177,11 +177,3 @@ variable "eip_enabled" {
   description = "Whether to provision and attach an Elastic IP to be used as the SFTP endpoint. An EIP will be provisioned per subnet."
   default     = false
 }
-
-variable "transfer_tags" {
-  type = map(string)
-  default = {
-    "zone_id"  = "/hostedzone/hostedZoneID"
-    "hostname" = "example.tf"
-  }
-}
