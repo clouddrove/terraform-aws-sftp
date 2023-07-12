@@ -31,7 +31,8 @@ jobs:
           - ${{ needs.versionExtract.outputs.minVersion }}
           - ${{ needs.versionExtract.outputs.maxVersion }}
         directory:
-          - _example/
+          - _example/public
+          - _example/vpc
 
     steps:
       - name: Checkout
