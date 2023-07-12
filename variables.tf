@@ -177,3 +177,13 @@ variable "eip_enabled" {
   description = "Whether to provision and attach an Elastic IP to be used as the SFTP endpoint. An EIP will be provisioned per subnet."
   default     = false
 }
+
+variable "workflow_details" {
+  type = object({
+    on_upload = object({
+      execution_role = string
+      workflow_id    = string
+    })
+  })
+  description = "Workflow details for triggering the execution on file upload."
+}

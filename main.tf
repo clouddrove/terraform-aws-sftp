@@ -46,6 +46,9 @@ data "aws_s3_bucket" "landing" {
   bucket = var.s3_bucket_name
 }
 
+####################################################################################################################################
+# IAM POLICIES
+####################################################################################################################################
 
 # Module      : IAM POLICY
 # Description : This data source can be used to fetch information about a specific IAM role.
@@ -192,6 +195,12 @@ resource "aws_transfer_server" "transfer_server" {
   security_policy_name   = var.security_policy_name
   logging_role           = join("", aws_iam_role.logging[*].arn)
   tags                   = module.labels.tags
+  workflow_details {
+    on_upload {
+      execution_role = var.workflow_details.on_upload.execution_role
+      workflow_id    = var.workflow_details.on_upload.workflow_id
+    }
+  }
   dynamic "endpoint_details" {
     for_each = local.is_vpc ? [1] : []
     content {
