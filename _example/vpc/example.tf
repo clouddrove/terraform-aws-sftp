@@ -95,7 +95,7 @@ module "sftp" {
   vpc_security_group_ids = [module.security_group-sftp.security_group_ids]
   workflow_details = {
       on_upload = {
-        execution_role = "arn:aws:iam::926948599287:role/test-sftp-transfer-cloudwatch"
+        execution_role = "arn:aws:iam::1234567890:role/test-sftp-transfer-role"
         workflow_id    = "w-ce0fb52ffa53c46da"
       }
   }
