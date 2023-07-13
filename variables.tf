@@ -26,7 +26,7 @@ variable "label_order" {
 
 variable "attributes" {
   type        = list(any)
-  default     = ["transfer", "cloudwatch"]
+  default     = ["transfer"]
   description = "Additional attributes (e.g. `1`)."
 }
 
