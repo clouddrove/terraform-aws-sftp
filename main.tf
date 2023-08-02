@@ -54,7 +54,7 @@ resource "aws_iam_role" "transfer_server_role" {
 
 # Module      : IAM ROLE POLICY
 # Description : Provides an IAM role policy.
-resource "aws_iam_role_policy" "transfer_server_policy" {
+resource "aws_iam_role_polic5y" "transfer_server_policy" {
   count = var.enable_sftp ? 1 : 0
 
   name   = module.labels.id

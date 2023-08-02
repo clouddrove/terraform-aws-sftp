@@ -26,5 +26,4 @@ module "sftp" {
   user_name     = "ftp-user"
   s3_bucket_id  = module.s3_bucket.id
   endpoint_type = "PUBLIC"
-  key_path = "id_rsa.pub"
 }
