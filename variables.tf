@@ -30,23 +30,12 @@ variable "attributes" {
   description = "Additional attributes (e.g. `1`)."
 }
 
-variable "tags" {
-  type        = map(any)
-  default     = {}
-  description = "Additional tags (e.g. map(`BusinessUnit`,`XYZ`)."
-}
-
 variable "managedby" {
   type        = string
   default     = "hello@clouddrove.com"
   description = "ManagedBy, eg 'CloudDrove'."
 }
 
-variable "delimiter" {
-  type        = string
-  default     = "-"
-  description = "Delimiter to be used between `organization`, `environment`, `name` and `attributes`."
-}
 #Module      : SFTP
 #Description : Terraform sftp module variables.
 variable "enable_sftp" {
