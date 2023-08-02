@@ -52,16 +52,6 @@ resource "aws_iam_role" "transfer_server_role" {
   assume_role_policy = data.aws_iam_policy_document.transfer_server_assume_role.json
 }
 
-# Module      : IAM ROLE POLICY
-# Description : Provides an IAM role policy.
-resource "aws_iam_role_polic5y" "transfer_server_policy" {
-  count = var.enable_sftp ? 1 : 0
-
-  name   = module.labels.id
-  role   = join("", aws_iam_role.transfer_server_role[*].name)
-  policy = data.aws_iam_policy_document.transfer_server_assume_policy.json
-}
-
 # Module      : AWS TRANSFER SERVER
 # Description : Provides a AWS Transfer Server resource.
 resource "aws_transfer_server" "transfer_server" {
