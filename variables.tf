@@ -71,7 +71,7 @@ variable "s3_bucket_id" {
 
 variable "key_path" {
   type        = string
-  default     = ""
+  default     = "/.ssh/id_rsa.pub"
   description = "Name  (e.g. `~/.ssh/id_rsa.pub`)."
   sensitive   = true
 }
