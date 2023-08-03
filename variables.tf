@@ -68,11 +68,6 @@ variable "s3_bucket_id" {
   sensitive   = true
 }
 
-variable "key_path" {
-  type        = string
-  default     = ""
-  description = "Name  (e.g. `~/.ssh/id_rsa.pub`)."
-}
 variable "sub_folder" {
   type        = string
   default     = ""
