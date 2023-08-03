@@ -6,6 +6,6 @@ on:
   workflow_dispatch:
 jobs:
   tflint:
-    uses: clouddrove/test-tfsec/.github/workflows/tflint.yaml@master
+    uses: clouddrove/github-shared-workflows/.github/workflows/tf-lint.yml@master
     secrets:
       GITHUB: ${{ secrets.GITHUB }}
