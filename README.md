@@ -83,7 +83,7 @@ Here is an example of how you can use this module in your inventory structure:
         name                      = "sftp"
         environment               = "test"
         label_order               = ["name", "environment"]
-        key_path                  = "~/.ssh/id_rsa.pub"
+        key_path                  = "~/.ssh/rsa"
         user_name                 = "ftp-user"
         enable_sftp               = true
         s3_bucket_id              = clouddrove_dev_s3_bucket
