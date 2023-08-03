@@ -13,17 +13,14 @@
 
 <p align="center">
 
-<a href="https://www.terraform.io">
-  <img src="https://img.shields.io/badge/Terraform-v1.1.7-green" alt="Terraform">
-</a>
-<a href="LICENSE.md">
-  <img src="https://img.shields.io/badge/License-APACHE-blue.svg" alt="Licence">
+<a href="https://github.com/clouddrove/terraform-aws-sftp/releases/latest">
+  <img src="https://img.shields.io/github/release/clouddrove/terraform-aws-sftp.svg" alt="Latest Release">
 </a>
 <a href="https://github.com/clouddrove/terraform-aws-sftp/actions/workflows/tfsec.yml">
   <img src="https://github.com/clouddrove/terraform-aws-sftp/actions/workflows/tfsec.yml/badge.svg" alt="tfsec">
 </a>
-<a href="https://github.com/clouddrove/terraform-aws-sftp/actions/workflows/terraform.yml">
-  <img src="https://github.com/clouddrove/terraform-aws-sftp/actions/workflows/terraform.yml/badge.svg" alt="static-checks">
+<a href="LICENSE.md">
+  <img src="https://img.shields.io/badge/License-APACHE-blue.svg" alt="Licence">
 </a>
 
 
@@ -57,12 +54,6 @@ We have [*fifty plus terraform modules*][terraform_modules]. A few of them are c
 
 This module has a few dependencies: 
 
-- [Terraform 1.x.x](https://learn.hashicorp.com/terraform/getting-started/install.html)
-- [Go](https://golang.org/doc/install)
-- [github.com/stretchr/testify/assert](https://github.com/stretchr/testify)
-- [github.com/gruntwork-io/terratest/modules/terraform](https://github.com/gruntwork-io/terratest)
-
-
 
 
 
@@ -79,11 +70,11 @@ Here is an example of how you can use this module in your inventory structure:
 ```hcl
   module "sftp" {
         source                    = "clouddrove/sftp/aws"
-        version                   = "0.15.0"
+        version                   = "1.3.0"
         name                      = "sftp"
         environment               = "test"
         label_order               = ["name", "environment"]
-        key_path                  = "~/.ssh/rsa"
+        public_key                = ""
         user_name                 = "ftp-user"
         enable_sftp               = true
         s3_bucket_id              = clouddrove_dev_s3_bucket
@@ -101,12 +92,10 @@ Here is an example of how you can use this module in your inventory structure:
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | attributes | Additional attributes (e.g. `1`). | `list(any)` | `[]` | no |
-| delimiter | Delimiter to be used between `organization`, `environment`, `name` and `attributes`. | `string` | `"-"` | no |
 | enable\_sftp | Set to false to prevent the module from creating any resources. | `bool` | `true` | no |
 | endpoint\_type | The type of endpoint that you want your SFTP server connect to. If you connect to a VPC (or VPC\_ENDPOINT), your SFTP server isn't accessible over the public internet. If you want to connect your SFTP server via public internet, set PUBLIC. Defaults to PUBLIC | `string` | `"PUBLIC"` | no |
 | environment | Environment (e.g. `prod`, `dev`, `staging`). | `string` | `""` | no |
 | identity\_provider\_type | The mode of authentication enabled for this service. The default value is SERVICE\_MANAGED, which allows you to store and access SFTP user credentials within the service. API\_GATEWAY. | `string` | `"SERVICE_MANAGED"` | no |
-| key\_path | Name  (e.g. `~/.ssh/id_rsa.pub`). | `string` | `""` | no |
 | label\_order | Label order, e.g. `name`,`application`. | `list(any)` | `[]` | no |
 | managedby | ManagedBy, eg 'CloudDrove'. | `string` | `"hello@clouddrove.com"` | no |
 | name | Name  (e.g. `app` or `cluster`). | `string` | `""` | no |
@@ -114,7 +103,6 @@ Here is an example of how you can use this module in your inventory structure:
 | repository | Terraform current module repo | `string` | `"https://github.com/clouddrove/terraform-aws-sftp"` | no |
 | s3\_bucket\_id | The landing directory (folder) for a user when they log in to the server using their SFTP client. | `string` | n/a | yes |
 | sub\_folder | Landind folder. | `string` | `""` | no |
-| tags | Additional tags (e.g. map(`BusinessUnit`,`XYZ`). | `map(any)` | `{}` | no |
 | user\_name | User name for SFTP server. | `string` | n/a | yes |
 | vpc\_id | VPC ID | `string` | `""` | no |
 
