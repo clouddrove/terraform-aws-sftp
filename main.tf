@@ -31,18 +31,6 @@ data "aws_iam_policy_document" "transfer_server_assume_role" {
   }
 }
 
-data "aws_iam_policy_document" "transfer_server_assume_policy" {
-  statement {
-    effect = "Allow"
-
-    actions = [
-      "s3:*",
-    ]
-
-    resources = ["*"]
-  }
-}
-
 # Module      : IAM ROLE
 # Description : This data source can be used to fetch information about a specific IAM role.
 resource "aws_iam_role" "transfer_server_role" {
