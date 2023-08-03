@@ -84,5 +84,6 @@ resource "aws_transfer_ssh_key" "transfer_server_ssh_key" {
 
   server_id = join("", aws_transfer_server.transfer_server[*].id)
   user_name = join("", aws_transfer_user.transfer_server_user[*].user_name)
-  body      = var.public_key != ""  ? var.public_key : file(var.key_path)
+  body      = var.public_key
+#  != ""  ? var.public_key : file(var.key_path)
 }
