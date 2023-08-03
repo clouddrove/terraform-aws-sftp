@@ -54,7 +54,6 @@ variable "public_key" {
   type        = string
   default     = ""
   description = "Name  (e.g. `ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQ`)."
-  sensitive   = true
 }
 
 variable "identity_provider_type" {
@@ -71,9 +70,8 @@ variable "s3_bucket_id" {
 
 variable "key_path" {
   type        = string
-  default     = null
+  default     = ""
   description = "Name  (e.g. `~/.ssh/id_rsa.pub`)."
-  sensitive   = true
 }
 variable "sub_folder" {
   type        = string
