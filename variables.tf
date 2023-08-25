@@ -187,3 +187,8 @@ variable "workflow_details" {
   })
   description = "Workflow details for triggering the execution on file upload."
 }
+
+variable "enable_workflow" {
+  type = bool
+  default = false
+}

@@ -195,10 +195,13 @@ resource "aws_transfer_server" "transfer_server" {
   security_policy_name   = var.security_policy_name
   logging_role           = join("", aws_iam_role.logging[*].arn)
   tags                   = module.labels.tags
-  workflow_details {
-    on_upload {
-      execution_role = var.workflow_details.on_upload.execution_role
-      workflow_id    = var.workflow_details.on_upload.workflow_id
+  dynamic "workflow_details" {
+    for_each = var.enable_workflow ? [1] : []
+    content {
+      on_upload {
+        execution_role = var.workflow_details.on_upload.execution_role
+        workflow_id    = var.workflow_details.on_upload.workflow_id
+      }
     }
   }
   dynamic "endpoint_details" {
