@@ -63,12 +63,6 @@ variable "enable_sftp" {
 }
 
 
-variable "public_key" {
-  type        = string
-  default     = ""
-  description = "Name  (e.g. `ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQ`)."
-}
-
 variable "identity_provider_type" {
   type        = string
   default     = "SERVICE_MANAGED"
