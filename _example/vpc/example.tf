@@ -46,7 +46,7 @@ module "subnets" {
 # AWS SFTP SECURITY GROUP
 ################################################################################
 
-module "security_group-sftp" {
+module "security_group_sftp" {
   source      = "clouddrove/security-group/aws"
   version     = "2.0.0"
   name        = "sftp-sg"
@@ -124,7 +124,7 @@ module "sftp" {
   subnet_ids             = module.subnets.private_subnet_id
   vpc_id                 = module.vpc.vpc_id
   restricted_home        = true
-  vpc_security_group_ids = [module.security_group-sftp.security_group_ids]
+  vpc_security_group_ids = [module.security_group_sftp.security_group_id]
   workflow_details = {
     on_upload = {
       execution_role = "arn:aws:iam::1234567890:role/test-sftp-transfer-role"
