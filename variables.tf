@@ -1,5 +1,8 @@
+##----------------------------------------------------------------------------------
 #Module      : LABEL
 #Description : Terraform label module variables.
+##----------------------------------------------------------------------------------
+
 variable "name" {
   type        = string
   default     = ""
@@ -53,8 +56,12 @@ variable "enabled" {
   default     = true
   description = "Set to false to prevent the module from creating any resources."
 }
+
+##----------------------------------------------------------------------------------
 #Module      : SFTP
 #Description : Terraform sftp module variables.
+##----------------------------------------------------------------------------------
+
 variable "enable_sftp" {
   type        = bool
   default     = true

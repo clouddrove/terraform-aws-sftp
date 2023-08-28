@@ -2,10 +2,10 @@
 ## Description : This Script is used to create Transfer Server, Transfer User And  TransferSSK_KEY.
 ## Copyright @ CloudDrove. All Right Reserved.
 
-#Module      : labels
-#Description : This terraform module is designed to generate consistent label names and tags
-#              for resources. You can use terraform-labels to implement a strict naming
-#              convention.
+##----------------------------------------------------------------------------------
+## Labels module callled that will be used for naming and tags.
+##----------------------------------------------------------------------------------
+
 module "labels" {
   source  = "clouddrove/labels/aws"
   version = "1.3.0"
@@ -18,9 +18,9 @@ module "labels" {
   label_order = var.label_order
 }
 
-####################################################################################################################################
+##----------------------------------------------------------------------------------
 # LOCALS
-####################################################################################################################################
+##----------------------------------------------------------------------------------
 locals {
   count         = var.enabled
   s3_arn_prefix = "arn:${one(data.aws_partition.default[*].partition)}:s3:::"
@@ -46,9 +46,9 @@ data "aws_s3_bucket" "landing" {
   bucket = var.s3_bucket_name
 }
 
-####################################################################################################################################
+##----------------------------------------------------------------------------------
 # IAM POLICIES
-####################################################################################################################################
+##----------------------------------------------------------------------------------
 
 # Module      : IAM POLICY
 # Description : This data source can be used to fetch information about a specific IAM role.
@@ -142,8 +142,10 @@ data "aws_iam_policy_document" "assume_role_policy" {
   }
 }
 
+##----------------------------------------------------------------------------------
 # Module      : IAM ROLE
 # Description : This data source can be used to fetch information about a specific IAM role.
+##----------------------------------------------------------------------------------
 
 resource "aws_iam_role" "s3_access_for_sftp_users" {
   for_each = var.enabled ? local.user_names_map : {}
@@ -162,8 +164,10 @@ resource "aws_iam_policy" "s3_access_for_sftp_users" {
   tags = module.labels.tags
 }
 
+##----------------------------------------------------------------------------------
 # Module      : IAM ROLE POLICY
 # Description : Provides an IAM role policy.
+##----------------------------------------------------------------------------------
 resource "aws_iam_policy" "logging" {
   count = var.enabled ? 1 : 0
 
@@ -183,8 +187,11 @@ resource "aws_iam_role" "logging" {
   tags = module.labels.tags
 }
 
+##----------------------------------------------------------------------------------
 # Module      : AWS TRANSFER SERVER
 # Description : Provides a AWS Transfer Server resource.
+##----------------------------------------------------------------------------------
+
 resource "aws_transfer_server" "transfer_server" {
   count                  = var.enable_sftp ? 1 : 0
   identity_provider_type = var.identity_provider_type
@@ -218,8 +225,12 @@ resource "aws_transfer_server" "transfer_server" {
   }
 
 }
+
+##----------------------------------------------------------------------------------
 # Module      : AWS TRANSFER USER
 # Description : Provides a AWS Transfer User resource.
+##----------------------------------------------------------------------------------
+
 resource "aws_transfer_user" "transfer_server_user" {
   for_each = var.enabled ? { for user in var.sftp_users : user.username => user } : {}
 
@@ -242,9 +253,11 @@ resource "aws_transfer_user" "transfer_server_user" {
   }
 }
 
-
+##----------------------------------------------------------------------------------
 # Module      : AWS TRANSFER SERVER SSH
 # Description : Provides a AWS Transfer SERVER SSH resource.
+##----------------------------------------------------------------------------------
+
 resource "aws_transfer_ssh_key" "transfer_server_ssh_key" {
   count     = var.enabled ? length(var.sftp_users) : 0
   server_id = join("", aws_transfer_server.transfer_server[*].id)
@@ -253,17 +266,22 @@ resource "aws_transfer_ssh_key" "transfer_server_ssh_key" {
 }
 
 
-
+##----------------------------------------------------------------------------------
 # Module      : AWS ELASTIC IP
 # Description : Provides a AWS ELASTIC IP.
+##----------------------------------------------------------------------------------
+
 resource "aws_eip" "sftp" {
   count = var.enabled && var.eip_enabled ? length(var.subnet_ids) : 0
   vpc   = local.is_vpc
   tags  = module.labels.tags
 }
 
+##----------------------------------------------------------------------------------
 # Module      : Custom Domain
 # Description : Provides a Custom Domain
+##----------------------------------------------------------------------------------
+
 resource "aws_route53_record" "custom_domain" {
   count = var.enabled && length(var.domain_name) > 0 && length(var.zone_id) > 0 ? 1 : 0
 
