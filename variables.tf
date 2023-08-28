@@ -39,12 +39,6 @@ variable "managedby" {
   description = "ManagedBy, eg 'CloudDrove'."
 }
 
-variable "delimiter" {
-  type        = string
-  default     = "-"
-  description = "Delimiter to be used between `organization`, `environment`, `name` and `attributes`."
-}
-
 variable "enabled" {
   type        = bool
   default     = true
@@ -73,19 +67,6 @@ variable "identity_provider_type" {
 variable "s3_bucket_name" {
   type        = string
   description = "This is the bucket that the SFTP users will use when managing files"
-}
-
-variable "sub_folder" {
-  type        = string
-  default     = ""
-  description = "Landind folder."
-  sensitive   = true
-}
-
-variable "endpoint_type" {
-  type        = string
-  default     = "PUBLIC"
-  description = "The type of endpoint that you want your SFTP server connect to. If you connect to a VPC (or VPC_ENDPOINT), your SFTP server isn't accessible over the public internet. If you want to connect your SFTP server via public internet, set PUBLIC. Defaults to PUBLIC"
 }
 
 variable "vpc_id" {
@@ -136,11 +117,6 @@ variable "subnet_ids" {
   default     = []
 }
 
-variable "vpc_endpoint_id" {
-  type        = string
-  description = "The ID of the VPC endpoint. This property can only be used when endpoint_type is set to VPC_ENDPOINT"
-  default     = null
-}
 
 variable "security_policy_name" {
   type        = string
