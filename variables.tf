@@ -33,12 +33,6 @@ variable "attributes" {
   description = "Additional attributes (e.g. `1`)."
 }
 
-variable "tags" {
-  type        = map(any)
-  default     = {}
-  description = "Additional tags (e.g. map(`BusinessUnit`,`XYZ`)."
-}
-
 variable "managedby" {
   type        = string
   default     = "hello@clouddrove.com"
@@ -73,7 +67,6 @@ variable "public_key" {
   type        = string
   default     = ""
   description = "Name  (e.g. `ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQ`)."
-  sensitive   = true
 }
 
 variable "identity_provider_type" {
@@ -88,12 +81,6 @@ variable "s3_bucket_name" {
   description = "This is the bucket that the SFTP users will use when managing files"
 }
 
-variable "key_path" {
-  type        = string
-  default     = ""
-  description = "Name  (e.g. `~/.ssh/id_rsa.pub`)."
-  sensitive   = true
-}
 variable "sub_folder" {
   type        = string
   default     = ""
