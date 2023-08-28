@@ -183,6 +183,6 @@ variable "workflow_details" {
 }
 
 variable "enable_workflow" {
-  type = bool
+  type    = bool
   default = false
 }

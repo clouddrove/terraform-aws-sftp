@@ -49,10 +49,10 @@ module "subnets" {
 module "security_group-sftp" {
   source      = "clouddrove/security-group/aws"
   version     = "2.0.0"
-  name          = "sftp-sg"
-  environment   = "test"
-  label_order   = ["environment", "name"]
-  vpc_id        = module.vpc.vpc_id
+  name        = "sftp-sg"
+  environment = "test"
+  label_order = ["environment", "name"]
+  vpc_id      = module.vpc.vpc_id
   ## INGRESS Rules
   new_sg_ingress_rules_with_cidr_blocks = [{
     rule_count  = 1
@@ -104,7 +104,7 @@ module "s3_bucket" {
   label_order = ["environment", "name"]
 
   versioning    = true
-  logging       = true  
+  logging       = true
   acl           = "private"
   force_destroy = true
 }
@@ -126,9 +126,9 @@ module "sftp" {
   restricted_home        = true
   vpc_security_group_ids = [module.security_group-sftp.security_group_ids]
   workflow_details = {
-      on_upload = {
-        execution_role = "arn:aws:iam::1234567890:role/test-sftp-transfer-role"
-        workflow_id    = "w-12345XXXX6da"
-      }
+    on_upload = {
+      execution_role = "arn:aws:iam::1234567890:role/test-sftp-transfer-role"
+      workflow_id    = "w-12345XXXX6da"
+    }
   }
 }
