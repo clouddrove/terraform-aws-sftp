@@ -2,17 +2,10 @@
 ## Description : This Script is used to create Transfer Server, Transfer User And  TransferSSK_KEY.
 ## Copyright @ CloudDrove. All Right Reserved.
 
-<<<<<<< HEAD
 ##----------------------------------------------------------------------------------
 ## Labels module callled that will be used for naming and tags.
 ##----------------------------------------------------------------------------------
 
-=======
-#Module      : labels
-#Description : This terraform module is desigzned to generate consistent label names and tags
-#              for resources. You can use terraform-labels to implement a strict naming
-#              convention.
->>>>>>> a3ef3653b9f6af985f2c162e959e49623fcee0c2
 module "labels" {
   source  = "clouddrove/labels/aws"
   version = "1.3.0"
@@ -72,7 +65,6 @@ data "aws_iam_policy_document" "transfer_server_assume_role" {
   }
 }
 
-<<<<<<< HEAD
 data "aws_iam_policy_document" "transfer_server_assume_policy" {
   statement {
     effect = "Allow"
@@ -151,8 +143,6 @@ data "aws_iam_policy_document" "assume_role_policy" {
 }
 
 ##----------------------------------------------------------------------------------
-=======
->>>>>>> a3ef3653b9f6af985f2c162e959e49623fcee0c2
 # Module      : IAM ROLE
 # Description : This data source can be used to fetch information about a specific IAM role.
 ##----------------------------------------------------------------------------------
@@ -174,7 +164,6 @@ resource "aws_iam_policy" "s3_access_for_sftp_users" {
   tags = module.labels.tags
 }
 
-<<<<<<< HEAD
 ##----------------------------------------------------------------------------------
 # Module      : IAM ROLE POLICY
 # Description : Provides an IAM role policy.
@@ -196,18 +185,6 @@ resource "aws_iam_role" "logging" {
   managed_policy_arns = [join("", aws_iam_policy.logging[*].arn)]
 
   tags = module.labels.tags
-=======
-# Module      : AWS TRANSFER SERVER
-# Description : Provides a AWS Transfer Server resource.
-resource "aws_transfer_server" "transfer_server" {
-  count = var.enable_sftp && var.endpoint_type == "PUBLIC" ? 1 : 0
-
-  identity_provider_type = var.identity_provider_type
-  logging_role           = join("", aws_iam_role.transfer_server_role[*].arn)
-  force_destroy          = false
-  tags                   = module.labels.tags
-  endpoint_type          = var.endpoint_type
->>>>>>> a3ef3653b9f6af985f2c162e959e49623fcee0c2
 }
 
 ##----------------------------------------------------------------------------------
@@ -218,17 +195,12 @@ resource "aws_transfer_server" "transfer_server" {
 resource "aws_transfer_server" "transfer_server" {
   count                  = var.enable_sftp ? 1 : 0
   identity_provider_type = var.identity_provider_type
-<<<<<<< HEAD
   protocols              = ["SFTP"]
   domain                 = var.domain
   force_destroy          = var.force_destroy
   endpoint_type          = local.is_vpc ? "VPC" : "PUBLIC"
   security_policy_name   = var.security_policy_name
   logging_role           = join("", aws_iam_role.logging[*].arn)
-=======
-  logging_role           = join("", aws_iam_role.transfer_server_role[*].arn)
-  force_destroy          = false
->>>>>>> a3ef3653b9f6af985f2c162e959e49623fcee0c2
   tags                   = module.labels.tags
   dynamic "workflow_details" {
     for_each = var.enable_workflow ? [1] : []
@@ -269,7 +241,6 @@ resource "aws_transfer_user" "transfer_server_user" {
   home_directory      = lookup(each.value, "home_directory", null) != null ? lookup(each.value, "home_directory") : (!var.restricted_home ? "/${lookup(each.value, "s3_bucket_name", var.s3_bucket_name)}" : null)
   tags                = module.labels.tags
 
-<<<<<<< HEAD
   dynamic "home_directory_mappings" {
     for_each = var.restricted_home ? (
       lookup(each.value, "home_directory_mappings", null) != null ? lookup(each.value, "home_directory_mappings") : {}
@@ -280,13 +251,6 @@ resource "aws_transfer_user" "transfer_server_user" {
       target = home_directory_mappings.value
     }
   }
-=======
-  server_id      = var.endpoint_type == "VPC" ? join("", aws_transfer_server.transfer_server_vpc[*].id) : join("", aws_transfer_server.transfer_server[*].id)
-  user_name      = var.user_name
-  role           = join("", aws_iam_role.transfer_server_role[*].arn)
-  home_directory = format("/%s/%s", var.s3_bucket_id, var.sub_folder)
-  tags           = module.labels.tags
->>>>>>> a3ef3653b9f6af985f2c162e959e49623fcee0c2
 }
 
 ##----------------------------------------------------------------------------------
@@ -302,7 +266,6 @@ resource "aws_transfer_ssh_key" "transfer_server_ssh_key" {
 }
 
 
-<<<<<<< HEAD
 ##----------------------------------------------------------------------------------
 # Module      : AWS ELASTIC IP
 # Description : Provides a AWS ELASTIC IP.
@@ -330,9 +293,4 @@ resource "aws_route53_record" "custom_domain" {
   records = [
     join("", aws_transfer_server.transfer_server[*].endpoint)
   ]
-=======
-  server_id = join("", aws_transfer_server.transfer_server[*].id)
-  user_name = join("", aws_transfer_user.transfer_server_user[*].user_name)
-  body      = var.public_key
->>>>>>> a3ef3653b9f6af985f2c162e959e49623fcee0c2
 }
