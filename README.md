@@ -66,51 +66,51 @@ This module has a few dependencies:
 
 
 ### Simple Example
-### Public
+### PUBLIC  
 Here is an example of how you can use this module in your inventory structure:
 ```hcl
-    module "sftp" {
-      source         = "clouddrove/sftp/aws"
-      version        = "1.3.1"      
-      name           = "sftp"
-      environment    = "test"
-      label_order    = ["environment", "name"]
-      enable_sftp    = true
-      s3_bucket_name = module.s3_bucket.id
-      endpoint_type  = "PUBLIC"
-      workflow_details = {
-        on_upload = {
-          execution_role = "arn:aws:iam::1234567890:role/test-sftp-transfer-role"
-          workflow_id    = "w-12345XXXX6da"
-        }
+  module "sftp" {
+    source         = "clouddrove/sftp/aws"
+    version        = "1.3.1"      
+    name           = "sftp"
+    environment    = "test"
+    label_order    = ["environment", "name"]
+    enable_sftp    = true
+    s3_bucket_name = module.s3_bucket.id
+    endpoint_type  = "PUBLIC"
+    workflow_details = {
+      on_upload = {
+        execution_role = "arn:aws:iam::1234567890:role/test-sftp-transfer-role"
+        workflow_id    = "w-12345XXXX6da"
       }
     }
+  }
 ```
 
-### VPC
-Here is an example of how you can use this module in your inventory structure:
+### VPC  
 ```hcl
-    module "sftp" {
-      source                 = "clouddrove/sftp/aws"
-      version                = "1.3.1"      
-      name                   = "sftp"
-      environment            = "test"
-      label_order            = ["environment", "name"]
-      eip_enabled            = false
-      s3_bucket_name         = module.s3_bucket.id
-      sftp_users             = var.sftp_users
-      subnet_ids             = module.subnets.private_subnet_id
-      vpc_id                 = module.vpc.vpc_id
-      restricted_home        = true
-      vpc_security_group_ids = [module.security_group_sftp.security_group_id]
-      workflow_details = {
-        on_upload = {
-          execution_role = "arn:aws:iam::1234567890:role/test-sftp-transfer-role"
-          workflow_id    = "w-12345XXXX6da"
-        }
+  module "sftp" {
+    source                 = "clouddrove/sftp/aws"
+    version                = "1.3.1"      
+    name                   = "sftp"
+    environment            = "test"
+    label_order            = ["environment", "name"]
+    eip_enabled            = false
+    s3_bucket_name         = module.s3_bucket.id
+    sftp_users             = var.sftp_users
+    subnet_ids             = module.subnets.private_subnet_id
+    vpc_id                 = module.vpc.vpc_id
+    restricted_home        = true
+    vpc_security_group_ids = [module.security_group_sftp.security_group_id]
+    workflow_details = {
+      on_upload = {
+        execution_role = "arn:aws:iam::1234567890:role/test-sftp-transfer-role"
+        workflow_id    = "w-12345XXXX6da"
       }
     }
+  }
 ```
+
 
 
 
@@ -128,6 +128,7 @@ Here is an example of how you can use this module in your inventory structure:
 | enable\_sftp | Set to false to prevent the module from creating any resources. | `bool` | `true` | no |
 | enable\_workflow | n/a | `bool` | `false` | no |
 | enabled | Set to false to prevent the module from creating any resources. | `bool` | `true` | no |
+| endpoint\_type | The type of endpoint that you want your SFTP server connect to. If you connect to a VPC (or VPC\_ENDPOINT), your SFTP server isn't accessible over the public internet. If you want to connect your SFTP server via public internet, set PUBLIC. Defaults to PUBLIC | `string` | `"PUBLIC"` | no |
 | environment | Environment (e.g. `prod`, `dev`, `staging`). | `string` | `""` | no |
 | force\_destroy | Forces the AWS Transfer Server to be destroyed | `bool` | `false` | no |
 | identity\_provider\_type | The mode of authentication enabled for this service. The default value is SERVICE\_MANAGED, which allows you to store and access SFTP user credentials within the service. API\_GATEWAY. | `string` | `"SERVICE_MANAGED"` | no |
