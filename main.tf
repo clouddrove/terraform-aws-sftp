@@ -46,6 +46,11 @@ data "aws_s3_bucket" "landing" {
   bucket = var.s3_bucket_name
 }
 
+resource "aws_cloudwatch_log_group" "sftp_log_group" {
+  name = "/aws/transfer/${module.labels.id}"
+  retention_in_days = 90
+}
+
 ##----------------------------------------------------------------------------------
 # IAM POLICIES
 ##----------------------------------------------------------------------------------
@@ -202,6 +207,9 @@ resource "aws_transfer_server" "transfer_server" {
   security_policy_name   = var.security_policy_name
   logging_role           = join("", aws_iam_role.logging[*].arn)
   tags                   = module.labels.tags
+  structured_log_destinations = [
+    "${aws_cloudwatch_log_group.sftp_log_group.arn}:*"
+  ]
   dynamic "workflow_details" {
     for_each = var.enable_workflow ? [1] : []
     content {
