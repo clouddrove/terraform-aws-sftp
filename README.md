@@ -71,6 +71,7 @@ Here is an example of how you can use this module in your inventory structure:
 ```hcl
     module "sftp" {
       source         = "clouddrove/sftp/aws"
+      version        = "1.3.1"      
       name           = "sftp"
       environment    = "test"
       label_order    = ["environment", "name"]
