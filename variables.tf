@@ -155,6 +155,7 @@ variable "workflow_details" {
 variable "enable_workflow" {
   type    = bool
   default = false
+  description = "This variable is used to enable the workflow"
 }
 
 variable "endpoint_type" {
