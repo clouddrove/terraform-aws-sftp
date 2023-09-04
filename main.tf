@@ -26,11 +26,11 @@ locals {
   s3_arn_prefix = "arn:${one(data.aws_partition.default[*].partition)}:s3:::"
   is_vpc        = var.vpc_id != null
 
-  user_names = length(var.sftp_users) > 0 ? [for user in var.sftp_users : user.username] : []
+  user_names = length(var.sftp_users) > 0 ? [for user in var.sftp_users : user.user_name] : []
 
   user_names_map = length(var.sftp_users) > 0 ? {
     for user in var.sftp_users :
-    user.username => merge(user, {
+    user.user_name => merge(user, {
       s3_bucket_arn = lookup(user, "s3_bucket_name", null) != null ? "${local.s3_arn_prefix}${lookup(user, "s3_bucket_name")}" : one(data.aws_s3_bucket.landing[*].arn)
     })
   } : {}
@@ -232,7 +232,7 @@ resource "aws_transfer_server" "transfer_server" {
 ##----------------------------------------------------------------------------------
 
 resource "aws_transfer_user" "transfer_server_user" {
-  for_each = var.enabled ? { for user in var.sftp_users : user.username => user } : {}
+  for_each = var.enabled ? { for user in var.sftp_users : user.user_name => user } : {}
 
   server_id           = join("", aws_transfer_server.transfer_server[*].id)
   role                = aws_iam_role.s3_access_for_sftp_users[each.value.user_name].arn
