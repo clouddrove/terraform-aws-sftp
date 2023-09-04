@@ -26,11 +26,11 @@ locals {
   s3_arn_prefix = "arn:${one(data.aws_partition.default[*].partition)}:s3:::"
   is_vpc        = var.vpc_id != null
 
-  user_names = length(var.sftp_users) > 0 ? [for user in var.sftp_users : user.username] : []
+  user_names = length(var.sftp_users) > 0 ? [for user in var.sftp_users : user.user_name] : []
 
   user_names_map = length(var.sftp_users) > 0 ? {
     for user in var.sftp_users :
-    user.username => merge(user, {
+    user.user_name => merge(user, {
       s3_bucket_arn = lookup(user, "s3_bucket_name", null) != null ? "${local.s3_arn_prefix}${lookup(user, "s3_bucket_name")}" : one(data.aws_s3_bucket.landing[*].arn)
     })
   } : {}
