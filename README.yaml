@@ -37,18 +37,45 @@ include:
 # How to use this project
 usage : |-
   ### Simple Example
+  ### PUBLIC  
   Here is an example of how you can use this module in your inventory structure:
   ```hcl
     module "sftp" {
-          source                    = "clouddrove/sftp/aws"
-          version                   = "1.3.0"
-          name                      = "sftp"
-          environment               = "test"
-          label_order               = ["name", "environment"]
-          public_key                = ""
-          user_name                 = "ftp-user"
-          enable_sftp               = true
-          s3_bucket_id              = clouddrove_dev_s3_bucket
-          endpoint_type             = "PUBLIC"
-          }
+      source         = "clouddrove/sftp/aws"
+      name           = "sftp"
+      environment    = "test"
+      label_order    = ["environment", "name"]
+      enable_sftp    = true
+      s3_bucket_name = module.s3_bucket.id
+      endpoint_type  = "PUBLIC"
+      workflow_details = {
+        on_upload = {
+          execution_role = "arn:aws:iam::1234567890:role/test-sftp-transfer-role"
+          workflow_id    = "w-12345XXXX6da"
+        }
+      }
+    }
+  ```
+
+  ### VPC  
+  ```hcl
+    module "sftp" {
+      source                 = "clouddrove/sftp/aws"
+      name                   = "sftp"
+      environment            = "test"
+      label_order            = ["environment", "name"]
+      eip_enabled            = false
+      s3_bucket_name         = module.s3_bucket.id
+      sftp_users             = var.sftp_users
+      subnet_ids             = module.subnets.private_subnet_id
+      vpc_id                 = module.vpc.vpc_id
+      restricted_home        = true
+      vpc_security_group_ids = [module.security_group_sftp.security_group_id]
+      workflow_details = {
+        on_upload = {
+          execution_role = "arn:aws:iam::1234567890:role/test-sftp-transfer-role"
+          workflow_id    = "w-12345XXXX6da"
+        }
+      }
+    }
   ```
