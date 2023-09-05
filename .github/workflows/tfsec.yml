@@ -1,7 +1,7 @@
 name: tfsec
-permissions: write-all
+permissions: read-all|write-all
 on:
-  pull_request_target:
+  pull_request:
     types: [opened, reopened]
   workflow_dispatch:
 jobs:
