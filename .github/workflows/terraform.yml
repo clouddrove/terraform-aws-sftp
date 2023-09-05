@@ -1,5 +1,7 @@
 name: static-checks
-permissions: write-all
+permissions:
+  id-token: write
+  contents: read
 on:
   pull_request_target:
 jobs:
