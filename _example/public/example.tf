@@ -10,7 +10,7 @@ module "s3_bucket" {
   source  = "clouddrove/s3/aws"
   version = "1.3.0"
 
-  name        = "clouddrove-sftp-bucket01"
+  name        = "sftp-bucket-457188"
   environment = "test"
   label_order = ["environment", "name"]
 
@@ -25,7 +25,7 @@ module "s3_bucket" {
 ################################################################################
 
 module "sftp" {
-  source         = "../.."
+  source         = "/home/vaibhav/workspace/sftp-terraform-fix/testing-sftp-oci/new-sftp-fork/terraform-aws-sftp"
   name           = "sftp"
   environment    = "test"
   label_order    = ["environment", "name"]
@@ -34,8 +34,8 @@ module "sftp" {
   endpoint_type  = "PUBLIC"
   workflow_details = {
     on_upload = {
-      execution_role = "arn:aws:iam::1234567890:role/test-sftp-transfer-role"
-      workflow_id    = "w-12345XXXX6da"
+      execution_role = ""
+      workflow_id    = ""
     }
   }
 }
