@@ -1,9 +1,7 @@
 name: static-checks
 
 on:
-  pull_request_target:
-    types:
-      - opened
+  pull_request:
 jobs:
   versionExtract:
     name: Get min/max versions
