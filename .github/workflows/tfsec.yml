@@ -1,9 +1,7 @@
 name: tfsec
 permissions: write-all
 on:
-  pull_request_target:
-    types:
-      - opened
+  pull_request:
   workflow_dispatch:
 jobs:
   tfsec:
