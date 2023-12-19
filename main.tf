@@ -58,30 +58,6 @@ resource "aws_cloudwatch_log_group" "sftp_log_group" {
 # Module      : IAM POLICY
 # Description : This data source can be used to fetch information about a specific IAM role.
 
-data "aws_iam_policy_document" "transfer_server_assume_role" {
-  statement {
-    effect  = "Allow"
-    actions = ["sts:AssumeRole"]
-
-    principals {
-      type        = "Service"
-      identifiers = ["transfer.amazonaws.com"]
-    }
-  }
-}
-
-data "aws_iam_policy_document" "transfer_server_assume_policy" {
-  statement {
-    effect = "Allow"
-
-    actions = [
-      "s3:*",
-    ]
-
-    resources = ["*"]
-  }
-}
-
 data "aws_iam_policy_document" "s3_access_for_sftp_users" {
   for_each = var.enabled ? local.user_names_map : {}
   statement {
