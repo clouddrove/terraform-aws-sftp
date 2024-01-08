@@ -31,7 +31,6 @@ module "sftp" {
   label_order    = ["environment", "name"]
   enable_sftp    = true
   s3_bucket_name = module.s3_bucket.id
-  endpoint_type  = "PUBLIC"
   workflow_details = {
     on_upload = {
       execution_role = "arn:aws:iam::1234567890:role/test-sftp-transfer-role"
