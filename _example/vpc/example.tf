@@ -120,7 +120,6 @@ module "sftp" {
   label_order            = ["environment", "name"]
   eip_enabled            = false
   s3_bucket_name         = module.s3_bucket.id
-  sftp_users             = var.sftp_users
   subnet_ids             = module.subnets.private_subnet_id
   vpc_id                 = module.vpc.vpc_id
   restricted_home        = true
