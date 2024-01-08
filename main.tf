@@ -22,11 +22,8 @@ module "labels" {
 # LOCALS
 ##----------------------------------------------------------------------------------
 locals {
-  count         = var.enabled
   s3_arn_prefix = "arn:${one(data.aws_partition.default[*].partition)}:s3:::"
   is_vpc        = var.vpc_id != null
-
-  user_names = length(var.sftp_users) > 0 ? [for user in var.sftp_users : user.user_name] : []
 
   user_names_map = length(var.sftp_users) > 0 ? {
     for user in var.sftp_users :
@@ -201,7 +198,7 @@ resource "aws_transfer_server" "transfer_server" {
       subnet_ids             = var.subnet_ids
       security_group_ids     = var.vpc_security_group_ids
       vpc_id                 = var.vpc_id
-      address_allocation_ids = var.eip_enabled ? aws_eip.sftp.*.id : var.address_allocation_ids
+      address_allocation_ids = var.eip_enabled ? aws_eip.sftp[*].id : var.address_allocation_ids
     }
   }
   lifecycle {
