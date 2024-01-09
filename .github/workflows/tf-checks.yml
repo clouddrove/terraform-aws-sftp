@@ -5,7 +5,11 @@ on:
   pull_request:
   workflow_dispatch:
 jobs:
-  example:
+  public:
     uses: clouddrove/github-shared-workflows/.github/workflows/tf-checks.yml@1.0.9
     with:
       working_directory: './_example/public'
+  vpc:
+    uses: clouddrove/github-shared-workflows/.github/workflows/tf-checks.yml@1.0.9
+    with:
+      working_directory: './_example/vpc'
