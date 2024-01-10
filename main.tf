@@ -45,7 +45,7 @@ data "aws_s3_bucket" "landing" {
 
 resource "aws_cloudwatch_log_group" "sftp_log_group" {
   name              = "/aws/transfer/${module.labels.id}"
-  retention_in_days = 90
+  retention_in_days = var.retention_in_days
 }
 
 ##----------------------------------------------------------------------------------
