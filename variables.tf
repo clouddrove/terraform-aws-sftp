@@ -2,7 +2,6 @@
 #Module      : LABEL
 #Description : Terraform label module variables.
 ##----------------------------------------------------------------------------------
-
 variable "name" {
   type        = string
   default     = ""
@@ -49,20 +48,17 @@ variable "enabled" {
 #Module      : SFTP
 #Description : Terraform sftp module variables.
 ##----------------------------------------------------------------------------------
-
 variable "enable_sftp" {
   type        = bool
   default     = true
   description = "Set to false to prevent the module from creating any resources."
 }
 
-
 variable "identity_provider_type" {
   type        = string
   default     = "SERVICE_MANAGED"
   description = "The mode of authentication enabled for this service. The default value is SERVICE_MANAGED, which allows you to store and access SFTP user credentials within the service. API_GATEWAY."
 }
-
 
 variable "s3_bucket_name" {
   type        = string
