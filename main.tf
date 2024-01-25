@@ -128,7 +128,7 @@ data "aws_iam_policy_document" "assume_role_policy" {
 resource "aws_iam_role" "s3_access_for_sftp_users" {
   for_each = var.enabled ? local.user_names_map : {}
 
-  name                = module.labels.id
+  name                = format("%s-sftp-users", module.labels.id)
   assume_role_policy  = join("", data.aws_iam_policy_document.assume_role_policy[*].json)
   managed_policy_arns = [aws_iam_policy.s3_access_for_sftp_users[each.value.user_name].arn]
 }
@@ -136,7 +136,7 @@ resource "aws_iam_role" "s3_access_for_sftp_users" {
 resource "aws_iam_policy" "s3_access_for_sftp_users" {
   for_each = var.enabled ? local.user_names_map : {}
 
-  name   = module.labels.id
+  name   = format("%s-sftp-users", module.labels.id)
   policy = data.aws_iam_policy_document.s3_access_for_sftp_users[each.value.user_name].json
 
   tags = module.labels.tags
@@ -149,7 +149,7 @@ resource "aws_iam_policy" "s3_access_for_sftp_users" {
 resource "aws_iam_policy" "logging" {
   count = var.enabled ? 1 : 0
 
-  name   = module.labels.id
+  name   = format("%s-logging", module.labels.id)
   policy = join("", data.aws_iam_policy_document.logging[*].json)
 
   tags = module.labels.tags
@@ -158,7 +158,7 @@ resource "aws_iam_policy" "logging" {
 resource "aws_iam_role" "logging" {
   count = var.enabled ? 1 : 0
 
-  name                = module.labels.id
+  name                = format("%s-logging", module.labels.id)
   assume_role_policy  = join("", data.aws_iam_policy_document.assume_role_policy[*].json)
   managed_policy_arns = [join("", aws_iam_policy.logging[*].arn)]
 
@@ -240,10 +240,10 @@ resource "aws_transfer_user" "transfer_server_user" {
 ##----------------------------------------------------------------------------------
 
 resource "aws_transfer_ssh_key" "transfer_server_ssh_key" {
-  count     = var.enabled ? length(var.sftp_users) : 0
+  for_each  = var.enabled ? var.sftp_users : {}
   server_id = join("", aws_transfer_server.transfer_server[*].id)
-  user_name = aws_transfer_user.transfer_server_user[count.index].user_name
-  body      = aws_transfer_user.transfer_server_user[count.index].public_key
+  user_name = var.sftp_users[each.key].user_name
+  body      = var.sftp_users[each.key].public_key
 }
 
 
