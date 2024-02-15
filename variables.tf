@@ -48,11 +48,6 @@ variable "enabled" {
 #Module      : SFTP
 #Description : Terraform sftp module variables.
 ##----------------------------------------------------------------------------------
-variable "enable_sftp" {
-  type        = bool
-  default     = true
-  description = "Set to false to prevent the module from creating any resources."
-}
 
 variable "identity_provider_type" {
   type        = string
@@ -125,9 +120,9 @@ variable "retention_in_days" {
   default     = 3
 }
 
-variable "domain_name" {
+variable "custom_domain" {
   type        = string
-  description = "Domain to use when connecting to the SFTP endpoint"
+  description = "Custom domain to use when connecting to the SFTP endpoint"
   default     = ""
 }
 
@@ -151,6 +146,7 @@ variable "workflow_details" {
     })
   })
   description = "Workflow details for triggering the execution on file upload."
+  default = null
 }
 
 variable "enable_workflow" {
