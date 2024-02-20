@@ -28,7 +28,6 @@ module "sftp" {
   name           = "sftp"
   environment    = "test"
   label_order    = ["environment", "name"]
-  enable_sftp    = true
   s3_bucket_name = module.s3_bucket.id
   workflow_details = {
     on_upload = {

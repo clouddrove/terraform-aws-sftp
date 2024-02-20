@@ -48,11 +48,6 @@ variable "enabled" {
 #Module      : SFTP
 #Description : Terraform sftp module variables.
 ##----------------------------------------------------------------------------------
-variable "enable_sftp" {
-  type        = bool
-  default     = true
-  description = "Set to false to prevent the module from creating any resources."
-}
 
 variable "identity_provider_type" {
   type        = string

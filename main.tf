@@ -128,7 +128,7 @@ data "aws_iam_policy_document" "assume_role_policy" {
 resource "aws_iam_role" "s3_access_for_sftp_users" {
   for_each = var.enabled ? local.user_names_map : {}
 
-  name                = format("%s-sftp-users", module.labels.id)
+  name                = "${module.labels.id}-${each.value.user_name}"
   assume_role_policy  = join("", data.aws_iam_policy_document.assume_role_policy[*].json)
   managed_policy_arns = [aws_iam_policy.s3_access_for_sftp_users[each.value.user_name].arn]
 }
@@ -136,7 +136,7 @@ resource "aws_iam_role" "s3_access_for_sftp_users" {
 resource "aws_iam_policy" "s3_access_for_sftp_users" {
   for_each = var.enabled ? local.user_names_map : {}
 
-  name   = format("%s-sftp-users", module.labels.id)
+  name   = "${module.labels.id}-${each.value.user_name}"
   policy = data.aws_iam_policy_document.s3_access_for_sftp_users[each.value.user_name].json
 
   tags = module.labels.tags
@@ -149,7 +149,7 @@ resource "aws_iam_policy" "s3_access_for_sftp_users" {
 resource "aws_iam_policy" "logging" {
   count = var.enabled ? 1 : 0
 
-  name   = format("%s-logging", module.labels.id)
+  name   = "${module.labels.id}-logging"
   policy = join("", data.aws_iam_policy_document.logging[*].json)
 
   tags = module.labels.tags
@@ -158,7 +158,7 @@ resource "aws_iam_policy" "logging" {
 resource "aws_iam_role" "logging" {
   count = var.enabled ? 1 : 0
 
-  name                = format("%s-logging", module.labels.id)
+  name                = "${module.labels.id}-logging"
   assume_role_policy  = join("", data.aws_iam_policy_document.assume_role_policy[*].json)
   managed_policy_arns = [join("", aws_iam_policy.logging[*].arn)]
 
@@ -171,7 +171,7 @@ resource "aws_iam_role" "logging" {
 ##----------------------------------------------------------------------------------
 
 resource "aws_transfer_server" "transfer_server" {
-  count                  = var.enable_sftp ? 1 : 0
+  count                  = var.enabled ? 1 : 0
   identity_provider_type = var.identity_provider_type
   protocols              = ["SFTP"]
   domain                 = var.domain
@@ -240,10 +240,10 @@ resource "aws_transfer_user" "transfer_server_user" {
 ##----------------------------------------------------------------------------------
 
 resource "aws_transfer_ssh_key" "transfer_server_ssh_key" {
-  for_each  = var.enabled ? var.sftp_users : {}
+  for_each  = var.enabled ? { for user in var.sftp_users : user.user_name => user } : {}
   server_id = join("", aws_transfer_server.transfer_server[*].id)
-  user_name = var.sftp_users[each.key].user_name
-  body      = var.sftp_users[each.key].public_key
+  user_name = aws_transfer_user.transfer_server_user[each.value.user_name].user_name
+  body      = each.value.public_key
 }
 
 
@@ -262,6 +262,12 @@ resource "aws_eip" "sftp" {
 # Module      : Custom Domain
 # Description : Provides a Custom Domain
 ##----------------------------------------------------------------------------------
+resource "aws_transfer_tag" "custom_hostname" {
+  count        = var.enabled && length(var.domain_name) > 0 ? 1 : 0
+  resource_arn = aws_transfer_server.transfer_server[0].arn
+  key          = "aws:transfer:customHostname"
+  value        = var.domain_name
+}
 
 resource "aws_route53_record" "custom_domain" {
   count = var.enabled && length(var.domain_name) > 0 && length(var.zone_id) > 0 ? 1 : 0
