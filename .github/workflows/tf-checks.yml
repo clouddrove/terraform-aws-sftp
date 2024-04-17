@@ -8,8 +8,8 @@ jobs:
   public:
     uses: clouddrove/github-shared-workflows/.github/workflows/tf-checks.yml@1.0.9
     with:
-      working_directory: './_example/public'
+      working_directory: './examples/public'
   vpc:
     uses: clouddrove/github-shared-workflows/.github/workflows/tf-checks.yml@1.0.9
     with:
-      working_directory: './_example/vpc'
+      working_directory: './examples/vpc'
