@@ -128,9 +128,16 @@ data "aws_iam_policy_document" "assume_role_policy" {
 resource "aws_iam_role" "s3_access_for_sftp_users" {
   for_each = var.enabled ? local.user_names_map : {}
 
-  name                = module.labels.id
-  assume_role_policy  = join("", data.aws_iam_policy_document.assume_role_policy[*].json)
-  managed_policy_arns = [aws_iam_policy.s3_access_for_sftp_users[each.value.user_name].arn]
+  name               = module.labels.id
+  assume_role_policy = join("", data.aws_iam_policy_document.assume_role_policy[*].json)
+}
+
+resource "aws_iam_policy_attachment" "s3_access_for_sftp_users" {
+  for_each = var.enabled ? local.user_names_map : {}
+
+  name       = module.labels.id
+  policy_arn = aws_iam_policy.s3_access_for_sftp_users[each.value.user_name].arn
+  roles      = [aws_iam_role.s3_access_for_sftp_users[each.value.user_name].name]
 }
 
 resource "aws_iam_policy" "s3_access_for_sftp_users" {
@@ -149,7 +156,7 @@ resource "aws_iam_policy" "s3_access_for_sftp_users" {
 resource "aws_iam_policy" "logging" {
   count = var.enabled ? 1 : 0
 
-  name   = module.labels.id
+  name   = format("%s-logging", module.labels.id)
   policy = join("", data.aws_iam_policy_document.logging[*].json)
 
   tags = module.labels.tags
@@ -158,11 +165,17 @@ resource "aws_iam_policy" "logging" {
 resource "aws_iam_role" "logging" {
   count = var.enabled ? 1 : 0
 
-  name                = module.labels.id
-  assume_role_policy  = join("", data.aws_iam_policy_document.assume_role_policy[*].json)
-  managed_policy_arns = [join("", aws_iam_policy.logging[*].arn)]
+  name               = format("%s-logging", module.labels.id)
+  assume_role_policy = join("", data.aws_iam_policy_document.assume_role_policy[*].json)
 
   tags = module.labels.tags
+}
+
+resource "aws_iam_role_policy_attachment" "logging" {
+  count = var.enabled ? 1 : 0
+
+  policy_arn = join("", aws_iam_policy.logging[*].arn)
+  role       = aws_iam_role.logging[0].name
 }
 
 ##----------------------------------------------------------------------------------
@@ -240,10 +253,10 @@ resource "aws_transfer_user" "transfer_server_user" {
 ##----------------------------------------------------------------------------------
 
 resource "aws_transfer_ssh_key" "transfer_server_ssh_key" {
-  count     = var.enabled ? length(var.sftp_users) : 0
+  for_each  = var.enabled ? { for user in var.sftp_users : user.user_name => user } : {}
   server_id = join("", aws_transfer_server.transfer_server[*].id)
-  user_name = aws_transfer_user.transfer_server_user[count.index].user_name
-  body      = aws_transfer_user.transfer_server_user[count.index].public_key
+  user_name = aws_transfer_user.transfer_server_user[each.value.user_name].user_name
+  body      = each.value.public_key
 }
 
 
@@ -253,9 +266,9 @@ resource "aws_transfer_ssh_key" "transfer_server_ssh_key" {
 ##----------------------------------------------------------------------------------
 
 resource "aws_eip" "sftp" {
-  count = var.enabled && var.eip_enabled ? length(var.subnet_ids) : 0
-  vpc   = local.is_vpc
-  tags  = module.labels.tags
+  count  = var.enabled && var.eip_enabled ? length(var.subnet_ids) : 0
+  domain = local.is_vpc
+  tags   = module.labels.tags
 }
 
 ##----------------------------------------------------------------------------------
