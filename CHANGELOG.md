@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.3.4] - 2026-03-20
+### :sparkles: New Features
+- [`4f95d6e`](https://github.com/clouddrove/terraform-aws-sftp/commit/4f95d6eb3ceeae12287d9c24704250b9bf96feaf) - updated example path and readme paramters *(commit by [@Tanveer143s](https://github.com/Tanveer143s))*
+
+### :memo: Documentation Changes
+- [`8d97acb`](https://github.com/clouddrove/terraform-aws-sftp/commit/8d97acba3b61613b1419711693d08cf375ef6ab1) - update CHANGELOG.md for 1.3.3 *(commit by [@clouddrove-ci](https://github.com/clouddrove-ci))*
+
+### :wrench: Chores
+- [`8009fc6`](https://github.com/clouddrove/terraform-aws-sftp/commit/8009fc6f3c415b988c165819cc99e54db0beeecc) - upgrade AWS provider to >= 5.80.0 and Terraform to >= 1.10.0 *(PR [#46](https://github.com/clouddrove/terraform-aws-sftp/pull/46) by [@clouddrove-ci](https://github.com/clouddrove-ci))*
+- [`554b781`](https://github.com/clouddrove/terraform-aws-sftp/commit/554b7810d383e95c8ca39156650cd13ae3ce256a) - standardize repo with security policy, pre-commit, release automation, and editor config *(PR [#47](https://github.com/clouddrove/terraform-aws-sftp/pull/47) by [@anmolnagpal](https://github.com/anmolnagpal))*
+
+
 ## [1.3.3] - 2024-01-10
 ### :sparkles: New Features
 - [`1eac805`](https://github.com/clouddrove/terraform-aws-sftp/commit/1eac8057cfd45a3211b66d3ce60c518c49e5acd3) - Add automerge github shared workflow *(PR [#36](https://github.com/clouddrove/terraform-aws-sftp/pull/36) by [@vaibhav7797](https://github.com/vaibhav7797))*
@@ -89,3 +101,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.3.1]: https://github.com/clouddrove/terraform-aws-sftp/compare/1.3.0...1.3.1
 [1.3.2]: https://github.com/clouddrove/terraform-aws-sftp/compare/1.3.1...1.3.2
 [1.3.3]: https://github.com/clouddrove/terraform-aws-sftp/compare/1.3.2...1.3.3
+[v1.3.4]: https://github.com/clouddrove/terraform-aws-sftp/compare/1.3.3...v1.3.4
