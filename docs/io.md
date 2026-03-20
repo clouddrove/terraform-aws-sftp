@@ -35,4 +35,3 @@
 | id | The Server ID of the Transfer Server (e.g. s-12345678). |
 | tags | A mapping of tags to assign to the resource. |
 | transfer\_server\_endpoint | The endpoint of the Transfer Server (e.g. s-12345678.server.transfer.REGION.amazonaws.com). |
-
