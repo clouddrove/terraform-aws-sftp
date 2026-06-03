@@ -37,6 +37,7 @@ module "subnets" {
   single_nat_gateway  = true
   availability_zones  = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
   vpc_id              = module.vpc.vpc_id
+  igw_id          = module.vpc.igw_id
   cidr_block          = module.vpc.vpc_cidr_block
   ipv6_cidr_block     = module.vpc.ipv6_cidr_block
   type                = "public-private"
@@ -118,12 +119,12 @@ module "s3_bucket" {
   source  = "clouddrove/s3/aws"
   version = "2.0.0"
 
-  name        = "clouddrove-sftp-bucket"
+  name        = "imran-clouddrove-sftp-bucket"
   environment = "test"
   label_order = ["environment", "name"]
 
   versioning    = true
-  logging       = true
+  logging       = false
   acl           = "private"
   force_destroy = true
 }

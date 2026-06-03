@@ -160,13 +160,18 @@ resource "aws_iam_role" "logging" {
   count = var.enabled ? 1 : 0
 
   name = "${module.labels.id}-logging"
-  # assume_role_policy  = join("", data.aws_iam_policy_document.assume_role_policy[*].json)
-  assume_role_policy  = one(data.aws_iam_policy_document.assume_role_policy[*].json)
-  managed_policy_arns = [join("", aws_iam_policy.logging[*].arn)]
+
+  assume_role_policy = one(data.aws_iam_policy_document.assume_role_policy[*].json)
 
   tags = module.labels.tags
 }
 
+resource "aws_iam_role_policy_attachment" "logging" {
+  count = var.enabled ? 1 : 0
+
+  role       = aws_iam_role.logging[0].name
+  policy_arn = aws_iam_policy.logging[0].arn
+}
 ##----------------------------------------------------------------------------------
 # Module      : AWS TRANSFER SERVER
 # Description : Provides a AWS Transfer Server resource.

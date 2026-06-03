@@ -10,12 +10,12 @@ module "s3_bucket" {
   source  = "clouddrove/s3/aws"
   version = "2.0.1"
 
-  name        = "clouddrove-sftp-bucket01"
+  name        = "imrann-clouddrove-sftp-bucket01"
   environment = "test"
   label_order = ["environment", "name"]
 
   versioning    = true
-  logging       = true
+  logging       = false
   acl           = "private"
   force_destroy = true
 }
