@@ -8,7 +8,7 @@ provider "aws" {
 
 module "vpc" {
   source                              = "clouddrove/vpc/aws"
-  version                             = "2.0.0"
+  version                             = "2.0.5"
   name                                = "vpc"
   environment                         = "test"
   cidr_block                          = "10.0.0.0/16"
@@ -25,13 +25,13 @@ module "vpc" {
 
 module "subnets" {
   source  = "clouddrove/subnet/aws"
-  version = "1.0.1"
+  version = "2.0.3"
 
   name        = "subnets"
   environment = "test"
   label_order = ["environment", "name"]
   # tags        = local.tags
-  enabled = true
+  enable = true
 
   nat_gateway_enabled = true
   single_nat_gateway  = true
@@ -48,56 +48,75 @@ module "subnets" {
 
 module "security_group_sftp" {
   source      = "clouddrove/security-group/aws"
-  version     = "2.0.0"
+  version     = "2.0.3"
   name        = "sftp-sg"
   environment = "test"
   label_order = ["environment", "name"]
   vpc_id      = module.vpc.vpc_id
   ## INGRESS Rules
-  new_sg_ingress_rules_with_cidr_blocks = [{
-    rule_count  = 1
-    from_port   = 22
-    protocol    = "tcp"
-    to_port     = 22
-    cidr_blocks = [module.vpc.vpc_cidr_block, "172.16.0.0/16"]
-    description = "Allow ssh traffic."
+
+  new_sg_ingress_rules = [
+    {
+      key         = "ssh-vpc"
+      ip_protocol = "tcp"
+      from_port   = 22
+      to_port     = 22
+      cidr_ipv4   = module.vpc.vpc_cidr_block
+      description = "Allow ssh traffic."
     },
     {
-      rule_count  = 2
+      key         = "ssh-private"
+      ip_protocol = "tcp"
+      from_port   = 22
+      to_port     = 22
+      cidr_ipv4   = "172.16.0.0/16"
+      description = "Allow ssh traffic."
+    },
+    {
+      key         = "sftp-private"
+      ip_protocol = "tcp"
       from_port   = 27017
-      protocol    = "tcp"
       to_port     = 27017
-      cidr_blocks = ["172.16.0.0/16"]
+      cidr_ipv4   = "172.16.0.0/16"
       description = "Allow SFTP traffic."
     }
   ]
 
   ## EGRESS Rules
-  new_sg_egress_rules_with_cidr_blocks = [{
-    rule_count  = 1
-    from_port   = 22
-    protocol    = "tcp"
-    to_port     = 22
-    cidr_blocks = [module.vpc.vpc_cidr_block, "172.16.0.0/16"]
-    description = "Allow ssh outbound traffic."
+  new_sg_egress_rules = [
+    {
+      key         = "ssh-egress-vpc"
+      ip_protocol = "tcp"
+      from_port   = 22
+      to_port     = 22
+      cidr_ipv4   = module.vpc.vpc_cidr_block
+      description = "Allow ssh outbound traffic."
     },
     {
-      rule_count  = 2
+      key         = "ssh-egress-private"
+      ip_protocol = "tcp"
+      from_port   = 22
+      to_port     = 22
+      cidr_ipv4   = "172.16.0.0/16"
+      description = "Allow ssh outbound traffic."
+    },
+    {
+      key         = "sftp-egress-private"
+      ip_protocol = "tcp"
       from_port   = 27017
-      protocol    = "tcp"
       to_port     = 27017
-      cidr_blocks = ["172.16.0.0/16"]
+      cidr_ipv4   = "172.16.0.0/16"
       description = "Allow SFTP outbound traffic."
-  }]
+    }
+  ]
 }
-
 ################################################################################
 # AWS S3
 ################################################################################
 
 module "s3_bucket" {
   source  = "clouddrove/s3/aws"
-  version = "1.3.0"
+  version = "2.0.0"
 
   name        = "clouddrove-sftp-bucket"
   environment = "test"
