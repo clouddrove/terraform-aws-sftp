@@ -26,8 +26,14 @@ variable "label_order" {
   description = "Label order, e.g. `name`,`application`."
 }
 
+
+# variable "attributes" {
+#   type        = list(any)
+#   default     = ["transfer"]
+#   description = "Additional attributes (e.g. `1`)."
+# }
 variable "attributes" {
-  type        = list(any)
+  type        = list(string)
   default     = ["transfer"]
   description = "Additional attributes (e.g. `1`)."
 }
@@ -72,10 +78,18 @@ variable "domain" {
   default     = "S3"
 }
 
+# variable "sftp_users" {
+#   type        = any
+#   default     = {}
+#   description = "List of SFTP usernames and public keys. The keys `user_name`, `public_key` are required. The keys `s3_bucket_name` are optional."
+# }
 variable "sftp_users" {
-  type        = any
-  default     = {}
-  description = "List of SFTP usernames and public keys. The keys `user_name`, `public_key` are required. The keys `s3_bucket_name` are optional."
+  type = list(object({
+    user_name      = string
+    public_key     = string
+    s3_bucket_name = optional(string)
+  }))
+  default = []
 }
 
 variable "restricted_home" {
@@ -146,7 +160,7 @@ variable "workflow_details" {
     })
   })
   description = "Workflow details for triggering the execution on file upload."
-  default = null
+  default     = null
 }
 
 variable "enable_workflow" {

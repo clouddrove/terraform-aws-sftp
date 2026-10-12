@@ -128,8 +128,9 @@ data "aws_iam_policy_document" "assume_role_policy" {
 resource "aws_iam_role" "s3_access_for_sftp_users" {
   for_each = var.enabled ? local.user_names_map : {}
 
-  name                = "${module.labels.id}-${each.value.user_name}"
-  assume_role_policy  = join("", data.aws_iam_policy_document.assume_role_policy[*].json)
+  name = "${module.labels.id}-${each.value.user_name}"
+  # assume_role_policy  = join("", data.aws_iam_policy_document.assume_role_policy[*].json)
+  assume_role_policy  = one(data.aws_iam_policy_document.assume_role_policy[*].json)
   managed_policy_arns = [aws_iam_policy.s3_access_for_sftp_users[each.value.user_name].arn]
 }
 
@@ -158,13 +159,19 @@ resource "aws_iam_policy" "logging" {
 resource "aws_iam_role" "logging" {
   count = var.enabled ? 1 : 0
 
-  name                = "${module.labels.id}-logging"
-  assume_role_policy  = join("", data.aws_iam_policy_document.assume_role_policy[*].json)
-  managed_policy_arns = [join("", aws_iam_policy.logging[*].arn)]
+  name = "${module.labels.id}-logging"
+
+  assume_role_policy = one(data.aws_iam_policy_document.assume_role_policy[*].json)
 
   tags = module.labels.tags
 }
 
+resource "aws_iam_role_policy_attachment" "logging" {
+  count = var.enabled ? 1 : 0
+
+  role       = aws_iam_role.logging[0].name
+  policy_arn = aws_iam_policy.logging[0].arn
+}
 ##----------------------------------------------------------------------------------
 # Module      : AWS TRANSFER SERVER
 # Description : Provides a AWS Transfer Server resource.
@@ -178,8 +185,9 @@ resource "aws_transfer_server" "transfer_server" {
   force_destroy          = var.force_destroy
   endpoint_type          = local.is_vpc ? "VPC" : "PUBLIC"
   security_policy_name   = var.security_policy_name
-  logging_role           = join("", aws_iam_role.logging[*].arn)
-  tags                   = module.labels.tags
+  # logging_role           = join("", aws_iam_role.logging[*].arn)
+  logging_role = one(aws_iam_role.logging[*].arn)
+  tags         = module.labels.tags
   structured_log_destinations = [
     "${aws_cloudwatch_log_group.sftp_log_group.arn}:*"
   ]
@@ -215,7 +223,8 @@ resource "aws_transfer_server" "transfer_server" {
 resource "aws_transfer_user" "transfer_server_user" {
   for_each = var.enabled ? { for user in var.sftp_users : user.user_name => user } : {}
 
-  server_id           = join("", aws_transfer_server.transfer_server[*].id)
+  # server_id           = join("", aws_transfer_server.transfer_server[*].id)
+  server_id           = one(aws_transfer_server.transfer_server[*].id)
   role                = aws_iam_role.s3_access_for_sftp_users[each.value.user_name].arn
   user_name           = each.value.user_name
   home_directory_type = lookup(each.value, "home_directory_type", null) != null ? lookup(each.value, "home_directory_type") : (var.restricted_home ? "LOGICAL" : "PATH")
@@ -241,7 +250,8 @@ resource "aws_transfer_user" "transfer_server_user" {
 
 resource "aws_transfer_ssh_key" "transfer_server_ssh_key" {
   for_each = var.enabled ? { for user in var.sftp_users : user.user_name => user } : {}
-  server_id = join("", aws_transfer_server.transfer_server[*].id)
+  # server_id = join("", aws_transfer_server.transfer_server[*].id)
+  server_id = one(aws_transfer_server.transfer_server[*].id)
   user_name = aws_transfer_user.transfer_server_user[each.value.user_name].user_name
   body      = each.value.public_key
 }
@@ -253,9 +263,9 @@ resource "aws_transfer_ssh_key" "transfer_server_ssh_key" {
 ##----------------------------------------------------------------------------------
 
 resource "aws_eip" "sftp" {
-  count = var.enabled && var.eip_enabled ? length(var.subnet_ids) : 0
-  vpc   = local.is_vpc
-  tags  = module.labels.tags
+  count  = var.enabled && var.eip_enabled ? length(var.subnet_ids) : 0
+  domain = local.is_vpc ? "vpc" : "standard"
+  tags   = module.labels.tags
 }
 
 ##----------------------------------------------------------------------------------
@@ -279,6 +289,6 @@ resource "aws_route53_record" "custom_domain" {
   ttl     = "300"
 
   records = [
-    join("", aws_transfer_server.transfer_server[*].endpoint)
+    one(aws_transfer_server.transfer_server[*].endpoint)
   ]
 }

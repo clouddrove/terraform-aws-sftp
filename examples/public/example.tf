@@ -8,14 +8,14 @@ provider "aws" {
 
 module "s3_bucket" {
   source  = "clouddrove/s3/aws"
-  version = "1.3.0"
+  version = "2.0.1"
 
-  name        = "clouddrove-sftp-bucket01"
+  name        = "imrann-clouddrove-sftp-bucket01"
   environment = "test"
   label_order = ["environment", "name"]
 
   versioning    = true
-  logging       = true
+  logging       = false
   acl           = "private"
   force_destroy = true
 }
@@ -29,7 +29,7 @@ module "sftp" {
   name           = "sftp"
   environment    = "test"
   label_order    = ["environment", "name"]
-  enable_sftp    = true
+  # enable_sftp    = true
   s3_bucket_name = module.s3_bucket.id
   workflow_details = {
     on_upload = {
